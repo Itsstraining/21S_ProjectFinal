@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SoundsComponent } from './components/sounds/sounds.component';
 
+
 @NgModule({
   declarations: [SignupComponent, SoundsComponent],
   imports: [
@@ -15,4 +16,4 @@ import { SoundsComponent } from './components/sounds/sounds.component';
     ReactiveFormsModule,
   ],
 })
-export class SignupModule {}
+export class SignupModule { }

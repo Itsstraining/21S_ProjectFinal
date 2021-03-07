@@ -1,0 +1,24 @@
+<header>
+    <img style="height: 9vh" src="../../../../../../assets/152400626_895752037847907_7072356985460831357_n.png"
+        alt="icon" />
+    <a href="#" class="logo">LUCKY 13 </a>
+    <ul>
+        <li><a routerLink="/home">Home</a></li>
+        <li><a routerLink="/aboutus">About</a></li>
+        <li><a href="#">Contact us</a></li>
+
+        <li *ngIf="!user"><a routerLink="/signup">SignUp</a>
+        </li>
+        <div *ngIf="!user">
+            <li><a routerLink="/signin">Login</a></li>
+        </div>
+        <div *ngIf="user">
+            <li><a>{{user.displayName}}</a></li>
+        </div>
+        <li>
+            <button mat-icon-button aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </li>
+    </ul>
+</header>

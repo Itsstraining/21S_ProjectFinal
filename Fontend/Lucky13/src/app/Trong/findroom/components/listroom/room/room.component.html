@@ -1,10 +1,17 @@
-
-  <div class="divall" style="margin-top: 0.4%"  >
-  <div class="div1" style="border-radius: 20px 0px 0px 20px;"  ><p style="color: white;" > <strong>{{room.id}}</strong> </p></div>
- <div class="div1"  ><p style="color: white;" > <strong>{{room.name}}</strong> </p></div>
- <div class="div1"  ><p style="color: rgb(221, 221, 48);"> <strong>{{room.coin}} <img style="width: 19px;" src="../../../../../../assets/money.png"> </strong> </p></div>
- <div class="div1" style="border-radius: 0px 20px 20px 0px;" >
-   <p style="color: white;" >
-   <strong  >{{room.person}}/4</strong></p>
-</div>
+<div (click)="openDialogJoin()" class="divall" style="margin-top: 0.4%">
+  <div class="div1" style="border-radius: 20px 0px 0px 20px;">
+    <p style="color: white;"> <strong>{{room.roomId}}</strong> </p>
+  </div>
+  <div class="div1">
+    <p style="color: white;"> <strong>{{room.name}}</strong> </p>
+  </div>
+  <div class="div1">
+    <p style="color: rgb(221, 221, 48);"> <strong>{{room.coin}} <img style="width: 19px;"
+          src="../../../../../../assets/money.png"> </strong> </p>
+  </div>
+  <div class="div1" style="border-radius: 0px 20px 20px 0px;">
+    <p style="color: white;">
+      <strong>{{room.playerNum}}/4</strong>
+    </p>
+  </div>
 </div>

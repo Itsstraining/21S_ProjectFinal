@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
+
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -8,11 +10,11 @@ import { UserService } from '../../services/user.service';
 export class SigninComponent implements OnInit {
   ID: any;
   PW: any;
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
   async loginWithGG() {
-    this.userService.loginWithGG();
+    await this.userService.loginWithGG();
   }
-  async login() {}
-  ngOnInit(): void {}
-  ngOnDestroy(): void {}
+  async login() { }
+  ngOnInit(): void { }
+  ngOnDestroy(): void { }
 }

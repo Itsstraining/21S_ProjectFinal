@@ -2,11 +2,11 @@
     <span (click)='joinRoom()'>
         New Document
     </span>
-    <span [class.selected]='docId === currentDoc' (click)='loadDoc(docId)' *ngFor='let docId of documents | async'>
+    <!-- <span [class.selected]='docId === currentDoc' (click)='loadDoc(docId)' *ngFor='let docId of documents | async'>
         {{ docId }}
-    </span>
+    </span> -->
 
-    <h1 style="color: aliceblue;" *ngFor='let docId of dataGame | async'>
+    <!-- <h1 style="color: aliceblue;" *ngFor='let docId of dataGame | async'>
         {{ docId }}
-    </h1>
+    </h1> -->
 </div>

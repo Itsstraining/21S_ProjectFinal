@@ -84,30 +84,26 @@ const routes1: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  { path: 'navTop', loadChildren: () => import('./ShareComponent/nav-top/nav-top.module').then(m => m.NavTopModule) },
+
 ];
 
 const routes: Routes = [
-  {
-    path: 'home',
-    component: HomeComponent,
-    //canActivate: [AuthGuard],
-    children: [
-      { path: 'homeLogin', component: HomeLoginComponent },
-      { path: 'findroom', component: FindroomComponent },
-      { path: 'play', component: PlayComponent },
-      { path: '**', component: NotfoundComponent },
-    ],
-  },
-  { path: '', component: AllPageComponent },
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeLoginComponent, canActivate: [AuthGuard] },
+  { path: 'play', component: PlayComponent, canActivate: [AuthGuard] },
+  { path: 'all', component: AllPageComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'aboutus', component: AboutusComponent },
+  { path: 'room', component: FindroomComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotfoundComponent },
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

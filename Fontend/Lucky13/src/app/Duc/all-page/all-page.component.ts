@@ -13,6 +13,9 @@ export class AllPageComponent implements OnInit {
   ngOnInit(): void {
   }
   joinRoom() {
-    this.documentService.joinRoom()
+    this.documentService.joinRoom('r123')
+  }
+  createRoom() {
+    //this.documentService.createRoom()
   }
 }

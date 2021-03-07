@@ -19,7 +19,7 @@ import { UserService } from '../services/user.service';
 })
 export class AuthGuard
   implements CanActivate, CanActivateChild, CanDeactivate<unknown>, CanLoad {
-  constructor(private router: Router, private auS: UserService) {}
+  constructor(private router: Router, private auS: UserService) { }
   // canActivate(
   //   route: ActivatedRouteSnapshot,
   //   state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -36,13 +36,13 @@ export class AuthGuard
     return new Promise((resolve, reject) => {
       this.auS.getCurrentUser().then(
         (user) => {
-          console.log(true);
+          console.log({ AuthGuard: true });
           resolve(true);
         },
         (err) => {
-          console.log(false);
+          console.log({ AuthGuard: false });
           resolve(false);
-          this.router.navigate(['/login']);
+          this.router.navigate(['']);
         }
       );
     });

@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: 'http://192.168.31.147:3000', options: {} };
 import { HttpClientModule } from '@angular/common/http';
 import { CountdownComponent } from './Long/pages/play/countdown/countdown.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -17,12 +17,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NavTopModule } from './ShareComponent/nav-top/nav-top.module';
+import { UserService } from './services/user.service';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SocketIoModule.forRoot(config),
     HttpClientModule,
     FormsModule,
     SocketIoModule.forRoot(config),
@@ -34,8 +37,10 @@ import { environment } from 'src/environments/environment';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    MatDialogModule,
+    NavTopModule,
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

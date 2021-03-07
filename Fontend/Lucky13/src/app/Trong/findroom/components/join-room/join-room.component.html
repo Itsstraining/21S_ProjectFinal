@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>Tham gia phòng {{data.name}}</h1>
+<div mat-dialog-content>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Huỷ</button>
+    <button mat-button [mat-dialog-close]="1" cdkFocusInitial>Ok</button>
+</div>

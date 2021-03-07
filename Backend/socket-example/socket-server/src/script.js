@@ -1,15 +1,22 @@
 class CardsService {
-    CARDS =
-        [
-            'Át♥', '02♥', '03♥', '04♥', '05♥', '06♥', '07♥', '08♥', '09♥', '10♥', 'JJ♥', 'QQ♥', 'KK♥',
-            'Át♦', '02♦', '03♦', '04♦', '05♦', '06♦', '07♦', '08♦', '09♦', '10♦', 'JJ♦', 'QQ♦', 'KK♦',
-            'Át♣', '02♣', '03♣', '04♣', '05♣', '06♣', '07♣', '08♣', '09♣', '10♣', 'JJ♣', 'QQ♣', 'KK♣',
-            'Át♠', '02♠', '03♠', '04♠', '05♠', '06♠', '07♠', '08♠', '09♠', '10♠', 'JJ♠', 'QQ♠', 'KK♠'
-        ]
+    CARDS = [
+        'Át♥', '02♥', '03♥', '04♥', '05♥', '06♥', '07♥', '08♥', '09♥', '10♥', 'JJ♥', 'QQ♥', 'KK♥',
+        'Át♦', '02♦', '03♦', '04♦', '05♦', '06♦', '07♦', '08♦', '09♦', '10♦', 'JJ♦', 'QQ♦', 'KK♦',
+        'Át♣', '02♣', '03♣', '04♣', '05♣', '06♣', '07♣', '08♣', '09♣', '10♣', 'JJ♣', 'QQ♣', 'KK♣',
+        'Át♠', '02♠', '03♠', '04♠', '05♠', '06♠', '07♠', '08♠', '09♠', '10♠', 'JJ♠', 'QQ♠', 'KK♠'
+    ]
+    priority = [
+        12.4, 13.4, 1.4, 2.4, 3.4, 4.4, 5.4, 6.4, 7.4, 8.4, 9.4, 10.4, 11.4,
+        12.3, 13.3, 1.3, 2.3, 3.3, 4.3, 5.3, 6.3, 7.3, 8.3, 9.3, 10.3, 11.3,
+        12.2, 13.2, 1.2, 2.2, 3.2, 4.2, 5.2, 6.2, 7.2, 8.2, 9.2, 10.2, 11.2,
+        12.1, 13.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1, 10.1, 11.1
+    ]
+
     arrCart = ['3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K', 't', '2']
     arrChat = ['♠', '♣', '♦', '♥']
     shuffle(array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
 
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
@@ -26,6 +33,8 @@ class CardsService {
 
         return array;
     }
+
+
     shuffleArray(array) {
         for (var i = array.length - 1; i > 0; i--) {
             var numRan = this.getRandom(0, i)
@@ -39,47 +48,15 @@ class CardsService {
         max++
         return Math.floor(Math.random() * (max - min) + min)
     }
-    falmOff(card) {
-        let cartsTemp = card
-        let min, max, arr1, arr2, arr3
-
-        //Chẻ bài
-        if (cartsTemp[0] == 'Át♥') {
-            arr1 = cartsTemp.slice(0, 26)
-            arr2 = cartsTemp.slice(26)
-            cartsTemp = []
-            for (let i = 0; i < 26; i++) {
-                cartsTemp.push(arr1[i])
-                cartsTemp.push(arr2[i])
-            }
+    falmOff() {
+        let deck = [...this.CARDS];
+        for (let i = 0; i < deck.length; i++) {
+            let temp = deck[i];
+            let randomPos = Math.floor(Math.random() * 51)
+            deck[i] = deck[randomPos]
+            deck[randomPos] = temp
         }
-
-        //Xáo kiểu 1
-        // for (let i = 0; i < 40; i++) {
-        //     min = getRandom(2, 25)
-        //     max = getRandom(26, 51)
-        //     arr1 = cartsTemp.slice(0, min)
-        //     arr2 = cartsTemp.slice(min, max)
-        //     arr3 = cartsTemp.slice(max, 52)
-        //     cartsTemp = arr2.concat(arr1.concat(arr3))
-        // }
-
-        //Xáo kiểu 2
-        for (let i = 0; i < 10; i++) {
-            let length = 52
-            let numRandom = getRandom(1, 20)
-            arr1 = cartsTemp.slice(numRandom)
-            cartsTemp = cartsTemp.slice(0, numRandom)
-            length -= numRandom
-            do {
-                numRandom = getRandom(1, 10)
-                cartsTemp = arr1.slice(0, numRandom).concat(cartsTemp)
-                arr1 = arr1.slice(numRandom)
-                length -= numRandom
-            } while (length > 0)
-        }
-
-        return cartsTemp
+        return deck;
     }
 
     /**
@@ -98,24 +75,48 @@ class CardsService {
     }
     /**
      * 
-     * @param {Array} cart13 
+     * @param {Array} deck 
      */
-    sort(cart13) {
-        let temp = 0, length = 12
-        do {
-            for (let i = 0; i < length; i++) {
-                temp = this.isGreater1(cart13[i], cart13[i + 1])
-                if (temp == cart13[i]) {
-                    cart13[i] = cart13[i + 1]
-                    cart13[i + 1] = temp
-
+    sort(deck) {
+        for (let i = 0; i < deck.length - 1; i++) {
+            for (let j = 0; j < deck.length - i - 1; j++) {
+                if (this.priority[this.CARDS.indexOf(deck[j])] > this.priority[this.CARDS.indexOf(deck[j + 1])]) {
+                    let temp = deck[j]
+                    deck[j] = deck[j + 1]
+                    deck[j + 1] = temp
                 }
-                temp = cart13[i + 1]
             }
-            length--
-        } while (length != 0)
-        return cart13
+            // console.log(deck[i])
+
+        }
+        return deck
     }
+
+    /**
+     * 
+     * @param {Array<string>} playerDeck 
+     * @param {Array<string>} cards 
+     */
+    isValid(playerDeck, cards) {
+        let isValid = false;
+
+        for (let i = 0; i < cards.length; i++) {
+            if (playerDeck.indexOf(cards[i]) != -1) {
+                isValid = true;
+            } else {
+                isValid = false;
+            }
+            // console.log("player "+ this.priority[this.CARDS.indexOf(playerDeck[j])])
+            // if (this.priority[this.CARDS.indexOf(cards[i])] == this.priority[this.CARDS.indexOf(playerDeck[j])]) {
+
+            //     break;
+            // }else{
+
+            // }
+        }
+        return isValid;
+    }
+
     /**
      * 
      * @param {String} cart1 
@@ -129,8 +130,7 @@ class CardsService {
         //♥ ♦ ♣ ♠
         if (num1 == num2) {
             return chat1 > chat2 ? cart1 : cart2
-        }
-        else {
+        } else {
             let val1 = arrCart.indexOf(num1)
             let val2 = arrCart.indexOf(num2)
             if (val1 > val2)
@@ -157,11 +157,9 @@ class CardsService {
     checkWin(carts) {
         if (carts.length == 0) {
             return true
-        }
-        else if (carts.length < 13) {
+        } else if (carts.length < 13) {
             return false
-        }
-        else {
+        } else {
             let token = ''
             let token1 = ''
             let strCart = carts[0][0] + carts[0][1]
@@ -179,29 +177,23 @@ class CardsService {
                     arrTripb += token
                     canDoub = true
                     canTripb = false
-                }
-                else if (canDoub && token == token1) {
+                } else if (canDoub && token == token1) {
                     arrDoub += token
                     canDoub = false
-                }
-                else {
+                } else {
                     canDoub = true
                     canTripb = true
                 }
             }
             if (arrDoub.length == 12) {
                 return '6 đôi'
-            }
-            else if (strTemp.includes(arrDoub) && arrDoub != '') {
+            } else if (strTemp.includes(arrDoub) && arrDoub != '') {
                 return '5 đôi thông'
-            }
-            else if (arrTripb.length == 8) {
+            } else if (arrTripb.length == 8) {
                 return '4 xám cô'
-            }
-            else if (strCart.includes('02020202')) {
+            } else if (strCart.includes('02020202')) {
                 return 'tứ quý heo'
-            }
-            else if (strTemp.includes(strCart)) {
+            } else if (strTemp.includes(strCart)) {
                 return 'từ 3 tới át'
             }
 
@@ -216,20 +208,18 @@ class CardsService {
      * @param {Array} playerCarts 
      * 
      */
-    quickTake(arrInput, playerCarts, cartIndex1, cartIndex2) {
+    quickTake(arrInput, playerCarts, cartIndex1) {
         let res = []
         let cart1IsGreater = isGreater(playerCarts[cartIndex1], arrInput[0])
         if (arrInput.length <= playerCarts.length) {
-            if (arrInput.length == 1 && arrInput[0][1] != '2') {//Rác
+            if (arrInput.length == 1 && arrInput[0][1] != '2') { //Rác
                 return []
-            }
-            else if (arrInput.length == 2 && cart1IsGreater) {//Đôi
+            } else if (arrInput.length == 2 && cart1IsGreater) { //Đôi
 
                 if (playerCarts[cartIndex1 - 1][1] == playerCarts[cartIndex1][1]) {
                     res.push(cartIndex1 - 1)
                     res.push(cartIndex1)
-                }
-                else if (playerCarts[cartIndex1 + 1][1] == playerCarts[cartIndex1][1]) {
+                } else if (playerCarts[cartIndex1 + 1][1] == playerCarts[cartIndex1][1]) {
                     res.push(cartIndex1)
                     res.push(cartIndex1 + 1)
                 }
@@ -238,8 +228,7 @@ class CardsService {
                     return res
                 }
                 return []
-            }
-            else if (arrInput.length == 3 && arrInput[0][1] == arrInput[2][1] && cart1IsGreater) {//Sám
+            } else if (arrInput.length == 3 && arrInput[0][1] == arrInput[2][1] && cart1IsGreater) { //Sám
                 let canTripb = 0
                 let i = cartIndex1 - 2
                 i < 0 ? i = 0 : i = i
@@ -251,8 +240,7 @@ class CardsService {
                 }
                 if (canTripb == 3) return res
                 return []
-            }
-            else if (arrInput.length == 4 && arrInput[0][1] == arrInput[1][1]) {//Tứ
+            } else if (arrInput.length == 4 && arrInput[0][1] == arrInput[1][1]) { //Tứ
                 let valTemp = arrInput[0][1]
                 let canQua = 0
                 for (let i = cartIndex1 - 3; i < cartIndex1 + 4 || i < 13; i++) {
@@ -263,11 +251,9 @@ class CardsService {
                 }
                 if (canQua == 4) return res
                 return false
-            }
-            else if (arrInput.length > 2 && arrInput[0][1] == arrInput[1][1]) {//Thông
+            } else if (arrInput.length > 2 && arrInput[0][1] == arrInput[1][1]) { //Thông
                 return 'Thong'
-            }
-            else {//Sảnh
+            } else { //Sảnh
 
                 res.push(cartIndex1)
                 let temp = arrCart.indexOf(cartIndex1[1])
@@ -291,7 +277,7 @@ class CardsService {
             }
         }
     }
-    getValueCart() { }
+    getValueCart() {}
 
 
     //console.log(dealCarts(shuffleArray(CARDS)))

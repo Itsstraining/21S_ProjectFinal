@@ -1,6 +1,5 @@
-<div style="height: 60%; width: 90%; margin-top: 4.5%; margin-left: 0%;">
-  <div style="margin-left: 40%;" *ngFor="let item of cardService.cardsViews; let i = index" [attr.data-index]="i">
-    <app-cardview *ngFor="let card of cardService.cardsViews[i]" [card]="card">
-    </app-cardview>
+<div style="height: 35%; width: 60rem;position: relative;  margin-top: 10%; margin-left: 25%; padding-left: 20px;">
+  <div class="cards"  [ngClass]="{'last-child': last}" [ngStyle]="{'left':arrRandom[i][0]+'%','top':arrRandom[i][1]+'%'}" style=" position: absolute; " *ngFor="let item of cardService.Room.cardOut;let last =last;let i = index" [attr.data-index]="i">
+    <app-cardview  *ngFor="let card of cardService.cardsViews[i]" [card]="card"></app-cardview>
   </div>
-</div>
+</div> 

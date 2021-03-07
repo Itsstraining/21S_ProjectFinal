@@ -1,0 +1,144 @@
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+  }
+  
+  header {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    top: 0%;
+    left: 0%;
+    transition: 0.6s;
+    -webkit-transition: 0.6s;
+    -moz-transition: 0.6s;
+    -ms-transition: 0.6s;
+    -o-transition: 0.6s;
+    padding: 20px 100px;
+    z-index: 100000;
+  
+  }
+
+  // header ul{
+  // filter: blur(8px);
+  // -webkit-filter: blur(8px);
+  // }
+  
+  header.sticky {
+    padding: 10px 100px;
+    background: white;
+  }
+  header .logo {
+    position: absolute;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: 0.6s;
+    -webkit-transition: 0.6s;
+    -moz-transition: 0.6s;
+    -ms-transition: 0.6s;
+    -o-transition: 0.6s;
+    padding-left: 10vh;
+  }
+  
+  header ul {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 80vh;
+  }
+  
+  header ul li {
+    list-style: none;
+  }
+  
+  header ul li a {
+    position: relative;
+    margin: 0 25px;
+    padding-left: 1vh;
+    text-decoration: none;
+    white-space: nowrap;
+    color: #fff;
+    letter-spacing: 2px;
+    font-weight: 500px;
+    transition: 0.6s;
+    font-size: 20px;
+    -webkit-transition: 0.6s;
+    -moz-transition: 0.6s;
+    -ms-transition: 0.6s;
+    -o-transition: 0.6s;
+  }
+  
+  header ul li a:hover,
+  header.sticky ul li a:hover {
+    color: #006eff;
+  }
+  
+  header ul li a:focus {
+    color: #006eff;
+    padding: 5px;
+    border-color: #006eff;
+    border-bottom: solid 2px;
+  }
+  
+  header ul li a:active{
+      color: #006eff;
+    padding: 5px;
+    border-color: #006eff;
+    border-bottom: solid 2px;
+  }
+  
+  header ul div li a:focus {
+    border: none;
+  }
+  
+  @import url(https://fonts.googleapis.com/css?family=Fira+Sans:100,300,400);
+  
+  @mixin hover-active() {
+    &:hover,
+    &:active {
+      @content;
+    }
+  }
+  
+  header ul div li a {
+    background-image: linear-gradient(to right, #f05a28, #ec008c, #f05a28);
+    border-radius: 8px;
+    background-size: 300% 100%;
+    transition: all 0.5s ease-in-out;
+    text-transform: uppercase;
+    display: inline-block;
+    font-size: 20px;
+    opacity: 1;
+    padding: 7px 20px;
+    font-weight: 200px;
+    line-height: 1.1;
+    white-space: nowrap;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 2px;
+    @include hover-active() {
+      background-position: -50% 0;
+    }
+  }
+  
+  header.sticky .logo,
+  header.sticky ul li a {
+    color: black;
+  }
+  
+  @import url("https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&display=swap");
+  header .logo {
+    font-family: "Annie Use Your Telescope", cursive;
+  }
+  

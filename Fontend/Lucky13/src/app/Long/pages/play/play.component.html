@@ -12,7 +12,7 @@
       <p style="margin: 0">$ 5.2M</p>
     </div>
     <div style="margin-left: 15px">
-      <p *ngIf="cardDataService.isPlaying" style="
+      <p *ngIf="cardDataService.User.isPlaying" style="
           position: absolute;
           margin-left: 15px;
           width: 20px;
@@ -23,7 +23,7 @@
         ">
         13
       </p>
-      <img *ngIf="cardDataService.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
+      <img *ngIf="cardDataService.User.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
     </div>
   </div>
   <div class="av3" style="display: flex;">
@@ -35,7 +35,7 @@
       <p style="margin: 0">$ 3.2M</p>
     </div>
     <div style="margin-left: 60px;">
-      <p *ngIf="cardDataService.isPlaying" style="
+      <p *ngIf="cardDataService.User.isPlaying" style="
         position: absolute;
         margin-left: 15px;
         width: 20px;
@@ -46,14 +46,14 @@
       ">
         13
       </p>
-      <img *ngIf="cardDataService.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
+      <img *ngIf="cardDataService.User.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
     </div>
 
   </div>
 
   <div style="display: flex; margin-right: 1%;" class="av4">
     <div style="margin-right: 60px;">
-      <p *ngIf="cardDataService.isPlaying" style="
+      <p *ngIf="cardDataService.User.isPlaying" style="
         position: absolute;
         margin-left: 15px;
         width: 20px;
@@ -64,7 +64,7 @@
       ">
         13
       </p>
-      <img *ngIf="cardDataService.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
+      <img *ngIf="cardDataService.User.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
     </div>
     <div>
       <p style="margin: 0">Player 4</p>
@@ -76,9 +76,9 @@
   </div>
 
 
-  <app-countdown *ngIf="cardDataService.isPlaying"></app-countdown>
-  <app-listshowcards *ngIf="cardDataService.isPlaying"></app-listshowcards>
+  <app-countdown *ngIf="cardDataService.User.isPlaying"></app-countdown>
+  <app-listshowcards *ngIf="cardDataService.User.isPlaying"></app-listshowcards>
 </div>
-<button *ngIf="!cardDataService.isPlaying" (click)="letStart()" style="position: absolute;top: 49%;left: 49%;">Bắt
+<button *ngIf="!cardDataService.User.isPlaying" (click)="letStart()" style="position: absolute;top: 49%;left: 49%;">Bắt
   đầu</button>
-<app-listcard *ngIf="cardDataService.isPlaying"></app-listcard>
+<app-listcard *ngIf="cardDataService.User.isPlaying"></app-listcard>
