@@ -12,7 +12,7 @@ export class ShowcarduserComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  cardUser:Array<Card> = [{
-    imageUrl:"",
-  }]
+
+  userCard = ['Át♥', '02♥', '03♥', '04♥', '05♥', '06♥', '07♥', '08♥', '09♥', '10♥', 'JJ♥', 'QQ♥', 'KK♥'];
+
 }
