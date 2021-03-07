@@ -265,24 +265,6 @@ io.on("connection", (socket) => {
 
     })
 
-    socket.on("getDoc", docId => {
-        safeJoin(docId);
-        socket.emit("document", documents[docId]);
-    });
-
-    socket.on("addDoc", doc => {
-        documents[doc.id] = doc;
-        safeJoin(doc.id);
-        io.emit("documents", Object.keys(documents));
-        //socket.emit("document", doc);
-    });
-
-    socket.on("editDoc", doc => {
-        documents[doc.id] = doc;
-        socket.to(doc.id).emit("document", doc);
-    });
-
-
     socket.on("disconnect", function () {
         console.log(`User [${socket.id}] is disconnect.`)
         let rid = users[socket.id].inRoom;
