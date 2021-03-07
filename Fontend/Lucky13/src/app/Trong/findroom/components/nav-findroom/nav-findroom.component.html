@@ -9,7 +9,51 @@
     mat-raised-button color="primary" (click)="openDialogJoin()">Tìm Phòng</button>
   <button style="margin-right: 2%;background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);width: 200px;height: 50px;  font-size: 22pt;"
     mat-raised-button color="primary" (click)="openDialog()">Tạo Phòng</button>
-  <img src="../../../../../assets/65136847_2294467344214117_8462180450478063616_n.jpg">
+  <img onclick="document.getElementById('id01').style.display='block'"  src="../../../../../assets/65136847_2294467344214117_8462180450478063616_n.jpg">
 </mat-toolbar>
 
 <!-- trong -->
+<div id="id01" class="modal">
+
+  <form class="modal-content animate" action="/action_page.php" method="post">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+    <h1><strong style="text-align: center; font-size: 30pt;color: black; margin-left: 40%;" >YOUR PROFILE</strong> </h1>
+    <div class="container" style="display: flex;" >
+        <div>
+          <img class="imgdialog" src="../../../../../assets/65136847_2294467344214117_8462180450478063616_n.jpg">
+        </div>
+        <div class="div1" >
+          <h2>Name</h2>
+          <h3><strong>Email</strong></h3>
+          <h3><strong>Phone</strong></h3>
+          <h3><strong>address</strong></h3>
+          <h3><strong>Coin</strong></h3>
+        </div>
+        <div class="div1" >
+          <h2>: Pham Tran Duc Trong</h2>
+          <h3><strong>: trong.phamtranduc@gmail.com</strong></h3>
+          <h3><strong>: 0856666430</strong></h3>
+          <h3><strong>: Ho Chi Minh</strong></h3>
+          <h3><strong>: 99999999 $</strong></h3>
+
+        </div>
+
+    </div>
+    <div class="container" style="background-color:#f1f1f1">
+      <!-- <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> -->
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" style="margin-right: 2%;background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);width: 200px;height: 50px; font-size: 22pt;"
+    mat-raised-button color="primary" >Close</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  var modal = document.getElementById('id01');
+  window.onclick = function(event) {
+      if (event.target == modal) {
+          modal.style.display = "none";
+      }
+  }
+  </script>
