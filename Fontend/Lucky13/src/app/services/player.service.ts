@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Player } from '../models/player.model';
+import { playerInfo } from '../models/playerInfo.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
-  plays: Array<Player>
+  plays: Array<playerInfo> = new Array<playerInfo>()
   constructor() { }
 }

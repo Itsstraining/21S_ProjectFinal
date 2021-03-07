@@ -12,6 +12,9 @@ import { keyframes } from '@angular/animations';
 import { Room } from '../models/room.model'
 import { User } from '../models/user.model';
 import { Rooms } from '../models/rooms.model';
+import { PlayerService } from './player.service';
+import { playerInfo } from '../models/playerInfo.model';
+
 
 
 @Injectable({
@@ -20,18 +23,32 @@ import { Rooms } from '../models/rooms.model';
 export class DocumentService {
   currentDocument = this.socket.fromEvent<Document>('document');
   documents = this.socket.fromEvent<string[]>('documents');
+
   gameData = this.socket.fromEvent<User>('gameData');
   roomData = this.socket.fromEvent<Room>('room')
   cardOutCheck = this.socket.fromEvent<boolean>('isValid')
   firstTurn = this.socket.fromEvent<string>("getCheck")
   takeCard = this.socket.fromEvent<string[]>("takeCard")
   endGame = this.socket.fromEvent<boolean>("endGame")
-  roomsData = this.socket.fromEvent<string[]>('rooms');
+  roomsData = this.socket.fromEvent<string[]>('rooms');//all room
+  playerInfo = this.socket.fromEvent<Array<string>>('playerInfo');
+  numCardOfAll = this.socket.fromEvent<any>('numCardOfAll');
+
+
+
+
   canJoin: boolean
   socketID
   temp
 
-  constructor(public socket: Socket,cardDataService: CardDataService,private router: Router,private roomService: RoomService) {
+  constructor(
+    public socket: Socket,
+    private cardDataService: CardDataService,
+    private router: Router,
+    private roomService: RoomService,
+    private playerService: PlayerService
+  ) {
+    this.getSocketID()
     this.firstTurn.subscribe(event => {
       alert(event)
     })
@@ -88,14 +105,41 @@ export class DocumentService {
         }
       }
     });
+
+    this.playerInfo.subscribe(event => {
+      this.playerService.plays = Array<playerInfo>()
+      for (let i = 0; i < 5; i++) {
+        if (event[0] == this.socketID) {
+          break
+        }
+        else {
+          let a = event.shift()
+          event.push(a)
+        }
+        i++
+      }
+
+      for (let i = 0; i < 4; i++) {
+        let temp: playerInfo = new playerInfo()
+        temp.socketID = event[i]
+        this.playerService.plays.push(temp)
+      }
+      console.log(this.playerService.plays)
+    });
+
+    this.numCardOfAll.subscribe(event => {
+      for (let i = 0; i < 4; i++) {
+        this.playerService.plays[i].numCard = event[i]
+      }
+    });
   }
 
   quitTurn() {
     this.socket.emit('quitTurn', "")
   }
 
-  letStart() {
-    this.socket.emit('letStart', 'r123');
+  letStart(rid) {
+    this.socket.emit('letStart', rid);
   }
   getSocketID() {
     this.socket.on('getID', (id) => {
@@ -117,6 +161,7 @@ export class DocumentService {
     this.socket.emit('join', idRoom);
     this.socket.on('canJoin', e => {
       if (e == true) {
+        this.roomService.roomUserChoice = idRoom
         this.router.navigate(['/play'])
       }
       else if (e == 'not found') {

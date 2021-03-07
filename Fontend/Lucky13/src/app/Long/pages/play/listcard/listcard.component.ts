@@ -16,13 +16,13 @@ export class ListcardComponent implements OnInit, OnDestroy {
   documents: Observable<string[]>;
   currentDoc: string;
   private _docSub: Subscription;
-  //dataGame: Observable<User>;
   roomData: Observable<Room>;
-  constructor(public cardService: CardDataService, private documentService: DocumentService) { }
+
+  constructor(public cardService: CardDataService, private documentService: DocumentService) {
+  }
 
   ngOnInit(): void {
     this.documents = this.documentService.documents;
-    //this.dataGame = this.documentService.gameData;
     this.roomData = this.documentService.roomData;
     this._docSub = this.documentService.currentDocument.subscribe(
       doc => {
@@ -38,20 +38,20 @@ export class ListcardComponent implements OnInit, OnDestroy {
   sendCards() {
 
     //Gui bai socket
-    
+
     //neu socket tra ve true=>
     if (this.cardService.inTurn == true) {
       this.cardService.cardsViews = this.cardService.cardViewTemp
       this.documentService.sendCard(this.cardService.cardsViews);
-      this.cardService.cardViewTemp = []  
-      }else{
+      this.cardService.cardViewTemp = []
+    } else {
       alert("chua toi luot")
     }
 
   }
   offTurn() {
     this.documentService.quitTurn();
-    this.cardService.cardViewTemp = [] ;
+    this.cardService.cardViewTemp = [];
   }
 
   newDoc() {

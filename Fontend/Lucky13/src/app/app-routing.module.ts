@@ -11,6 +11,7 @@ import { AllPageComponent } from './Duc/all-page/all-page.component';
 import { SignupComponent } from './Trong/signup/signup.component';
 import { PlayComponent } from './Long/pages/play/play.component';
 import { AboutusComponent } from './Thang/aboutus/aboutus.component';
+import { UserImforComponent } from './Thang/user-imfor/user-imfor.component';
 
 const routes1: Routes = [
   //Trong
@@ -98,6 +99,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'aboutus', component: AboutusComponent },
   { path: 'room', component: FindroomComponent, canActivate: [AuthGuard] },
+  { path: 'userInfo', component: UserImforComponent },
   { path: '**', component: NotfoundComponent },
 
 ];

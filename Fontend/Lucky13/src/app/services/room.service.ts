@@ -14,6 +14,7 @@ import { Rooms } from '../models/rooms.model';
   providedIn: 'root'
 })
 export class RoomService {
+  roomUserChoice
   rooms: Array<Rooms>
   isChange = ''
   constructor() {

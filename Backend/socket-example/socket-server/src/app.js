@@ -32,6 +32,7 @@ let publicValue = {
 let roomForAllUser = {
     r120: {
         roomId: 'r120',
+        users: ['', '', '', ''],
         playerNum: 1
     }
 }
@@ -56,6 +57,9 @@ function a() {
         room: room
     })
     console.log({
+        roomAll: roomForAllUser
+    })
+    console.log({
         users: users
     })
 }
@@ -71,16 +75,6 @@ function nextPlayer(id) {
     } else return players[nexPlayer];
 }
 
-function getLength(obj) {
-    var size = 0,
-        key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
-    }
-    return size;
-}
-
-
 const documents = {};
 
 io.on("connection", (socket) => {
@@ -94,21 +88,8 @@ io.on("connection", (socket) => {
         quitTurn: false,
         doneGame: false
     }
-    //console.log(User [${socket.id}] is connect.)
     console.log(`User [${socket.id}] is connect.`);
     socket.emit("getID", socket.id);
-
-    const safeJoin = (currentId) => {
-        socket.leave(previousId);
-        socket.join(currentId, () => {
-            console.log(`Socket ${socket.id} joined room ${currentId}`);
-        });
-        previousId = currentId;
-    };
-
-
-
-
     socket.on('letStart', (roomID) => {
         try {
             let usersTemp = []
@@ -119,7 +100,7 @@ io.on("connection", (socket) => {
                 io.of('/').in(roomID).clients(function (error, clients) {
                     let card = cardS.CARDS.slice()
                     let firstCard = []
-                    let cardTemp =  cardS.dealCarts(cardS.shuffleArray(card), usersTemp.length)
+                    let cardTemp = cardS.dealCarts(cardS.shuffleArray(card), usersTemp.length)
                     for (let i = 0; i < usersTemp.length; i++) {
                         users[usersTemp[i]].cards = cardTemp[i];
                         firstCard.push(cardTemp[i][0])
@@ -148,24 +129,36 @@ io.on("connection", (socket) => {
         }
         else {
             io.of("/").in(roomId).clients(function (error, clients) {
-                if (room[roomId].players.length < 4) {
-                    console.log(`socketId [${socket.id}] joined room.`);
-                    users[socket.id].inRoom = roomId;
-                    socket.emit("canJoin", true);
-                    //change rooms Array
-                    room[roomId].players.push(socket.id)
-                    roomForAllUser[roomId].playerNum += 1
-                    //send userInfo
-                    publicInRoom.push({ uid: socket.id, sid: socket.id })
-                    io.of("/").in(roomId).clients(function (error, clients) {
-                        console.log(clients)
-                    });
-                    io.emit("rooms", roomForAllUser);
+                if (roomForAllUser[roomId].playerNum < 5) {
+                    if (room[roomId].players.length != 4) {
 
+                    }
+
+                    //change User[]
+                    users[socket.id].inRoom = roomId;
+                    roomForAllUser[roomId].playerNum += 1
+                    for (let j = 0; j < 4; j++) {
+                        if (roomForAllUser[roomId].users[j] == '') {
+                            //change roomForAllUser[]
+                            roomForAllUser[roomId].users[j] = socket.id
+                            //change room[]
+                            room[roomId].players.splice(j, 0, socket.id)
+                            break
+                        }
+                    }
+                    //send userInfo[]
+                    for (let j = 0; j < 4; j++) {
+                        io.to(room[roomId].players[j]).emit('playerInfo', roomForAllUser[roomId].users);
+                    }
+                    socket.emit("canJoin", true);
+                    io.emit("rooms", roomForAllUser);
+                    console.log(`socketId [${socket.id}] joined room.`);
                     a();
-                } else {
+                }
+                else {
                     socket.emit("canJoin", false);
                 }
+
             });
         }
     });
@@ -243,6 +236,20 @@ io.on("connection", (socket) => {
             }
         }
 
+        //gửi số lượng bài mỗi người
+        let arrTemp = []
+        for (let i = 0; i < 4; i++) {
+            if (roomForAllUser[roomId].users[i] == '') {
+                arrTemp.push('-1')
+            }
+            else
+                arrTemp.push(users[room[roomId].players[i]].cards.length)
+        }
+        for (let i = 0; i < 4; i++) {
+            io.to(roomForAllUser[roomId].users[i]).emit('numCardOfAll', arrTemp)
+            let a = arrTemp.shift()
+            arrTemp.push(a)
+        }
         a();
 
         //io.to(room.roomId).emit('room',rooms[room.roomId])  
@@ -269,19 +276,32 @@ io.on("connection", (socket) => {
         console.log(`User [${socket.id}] is disconnect.`)
         let rid = users[socket.id].inRoom;
         delete users[socket.id];
-        //Delete user in room
-        if (rid != "") {
+        //Change room[]
+        if (room[rid]) {
             for (let i = 0; i < room[rid].players.length; i++) {
                 if (room[rid].players[i] == socket.id) {
-                    room[rid].players.splice(i, 1);
+                    room[rid].players.splice(i, 1)
+                    break
+                }
+            }
+            for (let i = 0; i < 4; i++) {
+                if (roomForAllUser[rid].users[i] == socket.id) {
+                    roomForAllUser[rid].users[i] = ''
+                    break
                 }
             }
             roomForAllUser[rid]['playerNum'] -= 1
-
             if (roomForAllUser[rid]['playerNum'] == 0) {
                 delete room[rid]
+                //change roomForAllUser[]
                 delete roomForAllUser[rid]
             }
+            else {
+                for (let j = 0; j < 4; j++) {
+                    io.to(room[rid].players[j]).emit('playerInfo', roomForAllUser[rid].users);
+                }
+            }
+
         }
         io.emit('rooms', roomForAllUser)
         a()
@@ -293,6 +313,7 @@ io.on("connection", (socket) => {
     //io.emit("documents", Object.keys(documents));
 
     //Start ROOM
+    socket.emit('getSocketId', socket.id)
     socket.on('createRoom', (newRoomID) => {
         if (room[newRoomID] == null) {
             room[newRoomID] = {
@@ -305,7 +326,8 @@ io.on("connection", (socket) => {
             }
             roomForAllUser[newRoomID] = {
                 roomId: newRoomID,
-                playerNum: 0
+                playerNum: 0,
+                users: ['', '', '', ''],
             }
 
             socket.emit('canCreateRoom', true)
@@ -330,6 +352,6 @@ io.on("connection", (socket) => {
     a();
     io.emit("users", Object.keys(documents));
 });
-http.listen(3000,'0.0.0.0', () => {
+http.listen(3000, () => {
     console.log("listening on *:3000");
 });

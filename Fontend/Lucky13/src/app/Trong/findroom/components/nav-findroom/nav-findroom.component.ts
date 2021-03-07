@@ -33,6 +33,7 @@ export class NavFindroomComponent {
   openDialog(): void {
     const dialogRef = this.dialog.open(CreateRoomComponent, {
       width: '280',
+      // id: 'dialogOpen',
       data: { name: this.name, animal: this.animal }
     });
 
