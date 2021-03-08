@@ -79,9 +79,18 @@
     margin-bottom: 10%;
   }
   .buttonbatdau {
-    position: absolute;top:49%;left: 49%;
-    background-color: silver;
+    position: absolute;top:45%;left: 47%;
+    background-color: darkorange;
     color: black;
+    width: 10vw;
+    height: 4vw;
+    font-size: 25pt;
+    border-radius: 25px;
+  }
+
+  .buttonbatdau:hover {
+    background-color: silver;
+
   }
   .classp {
     position: absolute;

@@ -71,7 +71,6 @@
   <app-listshowcards *ngIf="cardDataService.User.isPlaying"></app-listshowcards>
     <app-user></app-user>
     <app-showcarduser></app-showcarduser>
-
 </div>
 <button class="buttonbatdau" *ngIf="!cardDataService.User.isPlaying" (click)="letStart()" mat-stroked-button>Bắt Đầu</button>
 <app-listcard *ngIf="cardDataService.User.isPlaying"></app-listcard>
