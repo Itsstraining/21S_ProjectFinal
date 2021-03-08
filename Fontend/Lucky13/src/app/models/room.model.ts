@@ -5,4 +5,5 @@ export class Room {
     playerFirstStart: string;
     cardOut: Array<any>;
     firstCardOut: boolean;
+    chatHeo: Array<any>;
 }
