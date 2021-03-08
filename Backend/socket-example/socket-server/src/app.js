@@ -231,32 +231,6 @@ io.on("connection", (socket) => {
         } else {
             let lastCardOfOutNum = room[users[socket.id].inRoom].cardOut.length - 1;
             let lastCardsOut = room[users[socket.id].inRoom].cardOut[lastCardOfOutNum];
-            // if (lastCardsOut != undefined) {
-            //     let previousPlayerNum = players.indexOf(socket.id) - 1;
-            //     previousPlayerNum > -1 ? previousPlayerNum : previousPlayerNum += players.length;
-            //     let previousPlayer = room[roomId].players[previousPlayerNum];
-            //     let checkChatHeo = checkCards.chatHeo(deck, lastCardsOut);
-            //     let checkChatDeHeo = checkCards.chatDeHeo(deck, lastCardsOut);
-            //     console.log(checkChatHeo);
-            //     console.log(checkChatDeHeo)
-            //     if (checkChatHeo == true) {
-            //         room[roomId].chatHeo.push({
-            //             cards: lastCardsOut,
-            //             id: previousPlayer
-            //         });
-            //         room[roomId].chatHeo.push({
-            //             cards: deck,
-            //             id: socket.id
-            //         });
-            //     }
-            //     if (checkChatDeHeo == true) {
-            //         room[roomId].chatHeo.push({
-            //             card: deck,
-            //             id: socket.id
-            //         });
-            //     }
-            // }
-            // console.log(room[roomId].chatHeo)
             room[roomId].firstCardOut = true
             room[roomId].cardOut.push(deck);
             room[roomId].turn.push(socket.id);
@@ -283,6 +257,7 @@ io.on("connection", (socket) => {
             console.log(nextOfNextPlayer);
             if (nextId == nextOfNextPlayer) {
                 //het game
+                let cardsOut = room[roomId].cardOut;
                 let chatHeo = [];
                 let turn = []
                 for (let i = 0; i < room[roomId].cardOut.length; i++) {
@@ -299,6 +274,15 @@ io.on("connection", (socket) => {
                     users[turn[turn.length - 1]].coin += tienChatHeo;
                     users[turn[turn.length - 2]].coin -= tienChatHeo;
                 }
+
+                room[roomId].rank.push({
+                    allCards: users[socket.id].allCards,
+                    id: socket.id
+                })
+                room[roomId].rank.push({
+                    allCards: users[nextId].allCards,
+                    id: nextId
+                })
                 for (let j = 0; j < players.length; j++) {
                     io.to(players[j]).emit('result', {
                         allCards: users[socket.id].allCards,
@@ -309,6 +293,18 @@ io.on("connection", (socket) => {
                         id: nextId
                     })
                 }
+
+                for (let j = 0; j < room[roomId].rank.length; j++) {
+                    if (j == 0) {
+                        users[room[roomId].rank[j].id].coin += 2;
+                    } else if (j == 1) {
+                        users[room[roomId].rank[j].id].coin += 1;
+                    } else if (j == 2) {
+                        users[room[roomId].rank[j].id].coin -= 1;
+                    } else users[room[roomId].rank[j].id].coin -= 2;
+                }
+
+
                 setTimeout(() => {
                     console.log('het bai');
                     room[roomId].cardOut = [];
@@ -332,6 +328,10 @@ io.on("connection", (socket) => {
                 // let playerNum = players.indexOf(socket.id);
                 // players.splice(playerNum,1);
                 room[roomId].players = players;
+                room[roomId].rank.push({
+                    allCards: users[socket.id].allCards,
+                    id: socket.id
+                })
                 io.to(roomId).emit('room', room[roomId]);
                 for (let i = 0; i < players.length; i++) {
                     io.to(players[i]).emit('result', {
@@ -339,6 +339,8 @@ io.on("connection", (socket) => {
                         id: socket.id
                     })
                 }
+
+
 
             }
         }
@@ -433,6 +435,7 @@ io.on("connection", (socket) => {
                 turn: [],
                 bet: 5000,
                 chatHeo: [],
+                rank: [],
             }
             roomForAllUser[newRoomID] = {
                 roomId: newRoomID,
