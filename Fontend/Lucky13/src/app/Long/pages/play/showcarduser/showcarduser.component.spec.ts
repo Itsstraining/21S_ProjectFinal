@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListroomComponent } from './listroom.component';
+import { ShowcarduserComponent } from './showcarduser.component';
 
-describe('ListroomComponent', () => {
-  let component: ListroomComponent;
-  let fixture: ComponentFixture<ListroomComponent>;
+describe('ShowcarduserComponent', () => {
+  let component: ShowcarduserComponent;
+  let fixture: ComponentFixture<ShowcarduserComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ListroomComponent ]
+      declarations: [ ShowcarduserComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListroomComponent);
+    fixture = TestBed.createComponent(ShowcarduserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

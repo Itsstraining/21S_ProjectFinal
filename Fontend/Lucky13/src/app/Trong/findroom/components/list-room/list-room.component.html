@@ -1,0 +1,12 @@
+<!-- <app-room *ngFor='let room of roomService.rooms' [room]="room"></app-room> -->
+
+<div *ngFor="let item of roomView;let i = index" class="parent"
+    style="background-color: #7B7F78; width: 100%; height: 35%;  ">
+    <app-room [room]="roomView[i][0]"></app-room>
+    <app-room [room]="roomView[i][1]"></app-room>
+    <app-room [room]="roomView[i][2]"></app-room>
+    <app-room [room]="roomView[i][3]"></app-room>
+</div>
+<div class="parent" style="background-color: #7B7F78; width: 100%; height: 35%;  ">
+    <app-room *ngFor="let item of rooms" [room]="item"></app-room>
+</div>

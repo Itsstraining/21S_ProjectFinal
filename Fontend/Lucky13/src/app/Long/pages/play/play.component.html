@@ -1,10 +1,5 @@
 <div id="img">
-  <div class="id">
-    <p>Bet: 5k</p>
-    <p>Table No.: 1</p>
-  </div>
-
-  <div class="av1" style="display: flex" *ngIf="playerService.plays[2].socketID != ''">
+  <div style="display: flex" class="av1" *ngIf="playerService.plays[2].socketID != ''">
     <div>
       <p style="margin: 0">{{playerService.plays[2].socketID}}</p>
       <img
@@ -13,18 +8,11 @@
       <p style="margin: 0">$ 5.2M</p>
     </div>
     <div style="margin-left: 15px">
-      <p *ngIf="cardDataService.User.isPlaying" style="
-          position: absolute;
-          margin-left: 15px;
-          width: 20px;
-          height: 20px;
-          background-color: blanchedalmond;
-          color: black;
-          border-radius: 50%;
-        ">
+      <p class="classp" *ngIf="cardDataService.User.isPlaying">
         {{playerService.plays[2].numCard}}
       </p>
       <img *ngIf="cardDataService.User.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
+
     </div>
   </div>
 
@@ -88,8 +76,12 @@
   </div>
 
   <app-countdown *ngIf="cardDataService.User.isPlaying"></app-countdown>
+
+
   <app-listshowcards *ngIf="cardDataService.User.isPlaying"></app-listshowcards>
+  <app-user></app-user>
+  <app-showcarduser></app-showcarduser>
 </div>
-<button *ngIf="!cardDataService.User.isPlaying" (click)="letStart()" style="position: absolute;top: 49%;left: 49%;">Bắt
-  đầu</button>
+<!-- <button class="buttonbatdau" *ngIf="!cardDataService.User.isPlaying" (click)="letStart()" mat-stroked-button>Bắt Đầu</button> -->
+<img class="img4" src="../../../../assets//play_btn.png">
 <app-listcard *ngIf="cardDataService.User.isPlaying"></app-listcard>

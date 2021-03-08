@@ -11,16 +11,20 @@ import { CountdownComponent } from './countdown/countdown.component';
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { FormsModule } from '@angular/forms';
+import { UserComponent } from './user/user.component';
+import {MatButtonModule} from '@angular/material/button';
+import { ShowcarduserComponent } from './showcarduser/showcarduser.component';
+import { UsercardComponent } from './showcarduser/usercard/usercard.component';
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
-  declarations: [PlayComponent, CardsComponent, ListcardComponent, ListshowcardsComponent, CardviewComponent, CountdownComponent],
+  declarations: [PlayComponent, CardsComponent, ListcardComponent, ListshowcardsComponent, CardviewComponent, CountdownComponent, UserComponent, ShowcarduserComponent, UsercardComponent],
   imports: [
     CommonModule,
     PlayRoutingModule,
     FormsModule,
-    SocketIoModule.forRoot(config)
-
+    SocketIoModule.forRoot(config),
+    MatButtonModule
   ]
 })
 export class PlayModule { }

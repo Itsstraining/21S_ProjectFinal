@@ -10,18 +10,28 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon'
 import { MatTableModule } from '@angular/material/table';
-import { RoomComponent } from './components/listroom/room/room.component';
+import { RoomComponent } from './components/list-room/room/room.component';
 import { UserComponent } from './components/user/user.component';
 import { MatButtonModule } from '@angular/material/button';
-import { ListroomComponent } from './components/listroom/listroom.component';
+import { ListRoomComponent } from './components/list-room/list-room.component';
 import { MatRippleModule } from '@angular/material/core';
 import { JoinRoomComponent } from './components/join-room/join-room.component';
 import { NgModule } from '@angular/core';
 import { GetRoomComponent } from './components/get-room/get-room.component';
 
 
+
 @NgModule({
-  declarations: [CreateRoomComponent, FindroomComponent, NavFindroomComponent, RoomComponent, UserComponent, ListroomComponent, JoinRoomComponent, GetRoomComponent],
+  declarations: [
+    CreateRoomComponent,
+    FindroomComponent,
+    NavFindroomComponent,
+    RoomComponent,
+    UserComponent,
+    ListRoomComponent,
+    JoinRoomComponent,
+    GetRoomComponent,
+  ],
   imports: [
     CommonModule,
     FindroomRoutingModule,
