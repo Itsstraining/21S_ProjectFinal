@@ -14,6 +14,9 @@ export class SigninComponent implements OnInit {
   async loginWithGG() {
     await this.userService.loginWithGG();
   }
+  async loginWithAccount() {
+    await this.userService.loginWithAccount(this.ID, this.PW);
+  }
   async login() { }
   ngOnInit(): void { }
   ngOnDestroy(): void { }

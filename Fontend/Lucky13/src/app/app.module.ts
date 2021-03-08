@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NavTopModule } from './ShareComponent/nav-top/nav-top.module';
 import { UserService } from './services/user.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +43,7 @@ import { UserService } from './services/user.service';
     AngularFireAuthModule,
     MatDialogModule,
     NavTopModule,
+    MatSnackBarModule
   ],
   providers: [UserService],
   bootstrap: [AppComponent],
