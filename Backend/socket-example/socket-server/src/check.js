@@ -11,7 +11,8 @@ class CheckCardService {
         12.2, 13.2, 1.2, 2.2, 3.2, 4.2, 5.2, 6.2, 7.2, 8.2, 9.2, 10.2, 11.2,
         12.1, 13.1, 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1, 10.1, 11.1
     ]
-
+    arrCart = ['3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K', 't', '2']
+    arrChat = ['♠', '♣', '♦', '♥']
     rac(index, laCuoi) {
         if (this.priority[this.CARDS1.indexOf(index)] > this.priority[this.CARDS1.indexOf(laCuoi)]) {
             return [index]
@@ -117,6 +118,10 @@ class CheckCardService {
 
     }
 
+    /**
+     * 
+     * @param {Array<any>} array 
+     */
     isLegal(array) {
         let type
         if (array.length == 1) {
@@ -131,7 +136,6 @@ class CheckCardService {
                     return type = 3
                 } else {
                     temp = this.doiThong(array, array.length, array[0], array[0])
-                    console.log(temp)
                     if (temp != undefined) {
                         return type = 4
                     } else return type = 0
@@ -146,38 +150,80 @@ class CheckCardService {
      * @param {Array} playerDeck 
      * @param {Array} lastOutCard 
      */
-    compareDeck(playerDeck,lastOutCard){
+    compareDeck(playerDeck, lastOutCard) {
         let playerDeckType = this.isLegal(playerDeck);
         let lastOutCardType = this.isLegal(lastOutCard);
-        let lastCardOfPlayer = playerDeck[playerDeck.length-1];
-        let lastCardOfOutCard = lastOutCard[lastOutCard.length-1];
+        let lastCardOfPlayer = playerDeck[playerDeck.length - 1];
+        let lastCardOfOutCard = lastOutCard[lastOutCard.length - 1];
 
         if (lastOutCardType == 1 && lastOutCard[0][1] == '2') {
             if (playerDeckType == 2 && playerDeck.length == 4) {
                 return true;
-            }else if (playerDeckType == 4) {
+            } else if (playerDeckType == 4) {
                 return true;
-            }else if (playerDeckType == 1 && this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)] ) {
+            } else if (playerDeckType == 1 && this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
                 return true;
-            }else return false;
-        }else if (lastOutCardType == 2 && lastOutCard[0][1] == '2' && lastOutCard.length == 2) {
+            } else return false;
+        } else if (lastOutCardType == 2 && lastOutCard[0][1] == '2' && lastOutCard.length == 2) {
             if (playerDeckType == 2 && playerDeck.length == 4) {
                 return true;
-            }else if (playerDeckType == 4 && playerDeck.length == 8 ) {
+            } else if (playerDeckType == 4 && playerDeck.length == 8) {
                 return true;
-            }else if (playerDeckType == 2 && playerDeck.length == 4 ) {
+            } else if (playerDeckType == 2 && playerDeck.length == 4) {
                 return true;
-            }else if (playerDeckType == 2 && playerDeck.length == 2 &&  this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)] ) {
+            } else if (playerDeckType == 2 && playerDeck.length == 2 && this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
                 return true;
-            } return false;
-        }else if (playerDeckType == lastOutCardType) {
+            }
+            return false;
+        } else if (lastOutCardType == 4) {
+            if (playerDeckType == 2 && playerDeck.length == 4) {
+                return true;
+            } else if (playerDeckType == 4 && lastOutCard.length == 6 && playerDeck.length == 4) {
+                return true;
+            } else if (playerDeckType == 4 && lastOutCard.length == playerDeck.length) {
+                if (this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
+                    return true;
+                } else return false;
+            } else return false;
+        } else if (playerDeckType == lastOutCardType && playerDeck.length == lastOutCard.length) {
             if (this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
                 return true
-            }else return false
-        }else return false
+            } else return false
+        } else return false
+    }
+
+    /**
+     * 
+     * @param {Array<any>} cards 
+     */
+    chatHeo(cards) {
+        let count = 0;
+        for (let i = 0; i < cards.length; i++) {
+            let temp = this.isLegal(cards[i]);
+            if (temp == 1 && cards[i][0][1] == "2") {
+                if (cards[i][0][2] == '♠' || cards[i][0][2] == '♣') {
+                    count+=0.5;
+                }else count+=1;
+            }else if (temp == 2 && cards[i].length == 2 && cards[i][0][1] == '2') {
+                if (cards[i][0][2] == '♠' || cards[i][0][2] == '♣') {
+                    count+=0.5;
+                }else count+=1;
+                if (cards[i][1][2] == '♠' || cards[i][1][2] == '♣') {
+                    count+=0.5;
+                }else count+=1;
+            }else if (temp == 4) {
+                if (cards[i].length == 6) {
+                    count+=1;
+                }else count+=2;
+            }else if (temp == 2 && cards[i].length == 4) {
+                count+=2;
+            }
+        }
+        return count
     }
 
 
+    
 }
 
 module.exports = CheckCardService;
