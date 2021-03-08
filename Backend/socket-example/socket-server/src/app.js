@@ -20,6 +20,7 @@ let room = {
         isPlaying: false,
         playerFirstStart: '',
         cardOut: [],
+        chatHeo: [],
         firstCardOut: false
     },
 }
@@ -99,9 +100,10 @@ io.on("connection", (socket) => {
         inTurn: false,
         quitTurn: false,
         doneGame: false,
-        allCards: []
+        allCards: [],
+        coin: 0,
     }
-    
+
     //console.log(User [${socket.id}] is connect.)
     console.log(`User [${socket.id}] is connect.`);
     socket.emit("getID", socket.id);
@@ -129,9 +131,9 @@ io.on("connection", (socket) => {
                     let firstCard = []
                     let cardTemp = cardS.dealCarts(cardS.shuffleArray(card), usersTemp.length)
                     for (let i = 0; i < usersTemp.length; i++) {
-                        users[usersTemp[i]].cards = cardTemp[i];
-                        users[usersTemp[i]].allCards = [...cardTemp[i]];
-                        firstCard.push(cardTemp[i][0])
+                        users[usersTemp[i]].cards = cards[i];
+                        users[usersTemp[i]].allCards = [...cards[i]];
+                        firstCard.push(cards[i][0])
                         // //console.log(users[usersTemp[i]])
                         // io.to(usersTemp[i]).emit("gameData", cardTemp[i]);
                     }
@@ -155,7 +157,7 @@ io.on("connection", (socket) => {
         if (!room[roomId]) {
             socket.emit("canJoin", 'not found');
         } else {
-            
+
             io.of("/").in(roomId).clients(function (error, clients) {
                 if (room[roomId].players.length < 4) {
                     console.log(`socketId [${socket.id}] joined room.`);
@@ -191,10 +193,32 @@ io.on("connection", (socket) => {
         let nextOfNextPlayer = nextPlayer(nextId)
         let roomId = users[socket.id].inRoom
         users[nextId].inTurn = true;
+        let cardsOut = room[roomId].cardOut;
         if (nextId == nextOfNextPlayer) {
+
+            console.log(cardsOut)
+            console.log(room[roomId].turn)
+            let chatHeo = [];
+            let turn = []
+            for (let i = 0; i < room[roomId].cardOut.length; i++) {
+                if (cardsOut[i][0][1] == '2' && cardsOut[i + 1] != undefined) {
+                    turn = room[roomId].turn.splice(i, cardsOut.length - 1);
+                    chatHeo = cardsOut.splice(i, cardsOut.length - 1);
+                    break;
+                }
+            }
+            console.log(chatHeo)
+            console.log(turn)
+            if (turn.length != 0 || chatHeo.length != 0 ) {
+                let tienChatHeo = checkCards.chatHeo(chatHeo);
+                users[turn[turn.length - 1]].coin += tienChatHeo;
+                users[turn[turn.length - 2]].coin -= tienChatHeo;
+            }
+
             room[users[socket.id].inRoom].cardOut = [];
             for (let i = 0; i < players.length; i++) {
                 users[players[i]].quitTurn = false;
+
                 io.to(players[i]).emit('room', room[roomId])
                 io.to(players[i]).emit('gameData', users[players[i]])
             }
@@ -207,12 +231,42 @@ io.on("connection", (socket) => {
     })
 
     socket.on('sendCards', (deck) => {
-        let roomId = users[socket.id].inRoom
+        let roomId = users[socket.id].inRoom;
+        let players = room[users[socket.id].inRoom].players;
         if (deck[0] != users[socket.id].cards[0] && room[roomId].firstCardOut == false) {
             socket.emit('getCheck', 'luot dau phai gom la be nhat');
         } else {
+            let lastCardOfOutNum = room[users[socket.id].inRoom].cardOut.length - 1;
+            let lastCardsOut = room[users[socket.id].inRoom].cardOut[lastCardOfOutNum];
+            // if (lastCardsOut != undefined) {
+            //     let previousPlayerNum = players.indexOf(socket.id) - 1;
+            //     previousPlayerNum > -1 ? previousPlayerNum : previousPlayerNum += players.length;
+            //     let previousPlayer = room[roomId].players[previousPlayerNum];
+            //     let checkChatHeo = checkCards.chatHeo(deck, lastCardsOut);
+            //     let checkChatDeHeo = checkCards.chatDeHeo(deck, lastCardsOut);
+            //     console.log(checkChatHeo);
+            //     console.log(checkChatDeHeo)
+            //     if (checkChatHeo == true) {
+            //         room[roomId].chatHeo.push({
+            //             cards: lastCardsOut,
+            //             id: previousPlayer
+            //         });
+            //         room[roomId].chatHeo.push({
+            //             cards: deck,
+            //             id: socket.id
+            //         });
+            //     }
+            //     if (checkChatDeHeo == true) {
+            //         room[roomId].chatHeo.push({
+            //             card: deck,
+            //             id: socket.id
+            //         });
+            //     }
+            // }
+            // console.log(room[roomId].chatHeo)
             room[roomId].firstCardOut = true
             room[roomId].cardOut.push(deck);
+            room[roomId].turn.push(socket.id);
             for (let j = 0; j < deck.length; j++) {
                 let index = users[socket.id].cards.indexOf(deck[j])
                 users[socket.id].cards.splice(index, 1);
@@ -228,7 +282,7 @@ io.on("connection", (socket) => {
         }
         if (users[socket.id].cards.length == 0) {
             users[socket.id].doneGame = true;
-            let players = room[users[socket.id].inRoom].players;
+
             let nextId = nextPlayer(socket.id);
             let roomId = users[socket.id].inRoom;
             let nextOfNextPlayer = nextPlayer(nextId)
@@ -236,26 +290,48 @@ io.on("connection", (socket) => {
             console.log(nextOfNextPlayer);
             if (nextId == nextOfNextPlayer) {
                 //het game
-                for (let j = 0; j < players.length; j++) {
-                    io.to(players[j]).emit('result',{allCards:users[socket.id].allCards,id:socket.id})  
-                    io.to(players[j]).emit('result',{allCards:users[nextId].allCards,id:nextId})        
+                let chatHeo = [];
+                let turn = []
+                for (let i = 0; i < room[roomId].cardOut.length; i++) {
+                    if (cardsOut[i][0][1] == '2' && cardsOut[i + 1] != undefined) {
+                        turn = room[roomId].turn.splice(i, cardsOut.length - 1);
+                        chatHeo = cardsOut.splice(i, cardsOut.length - 1);
+                        break;
+                    }
                 }
-                setTimeout(()=>{
-                 console.log('het bai');
-                room[roomId].cardOut = [];
-                room[roomId].isPlaying = false;
-                room[roomId].firstCardOut = false
-                for (let i = 0; i < players.length; i++) {
-                    users[players[i]].isPlaying = false;
-                    users[players[i]].cards = [];
-                    users[players[i]].inTurn = false;
-                    users[players[i]].quitTurn = false;
-                    users[players[i]].doneGame = false;
-                    io.to(players[i]).emit('endGame', true)
-                    io.to(players[i]).emit('gameData', users[players[i]]);
-                    io.to(players[i]).emit('room',room[roomId]);
-                }   
-                },500)
+                console.log(chatHeo)
+                console.log(turn)
+                if (turn.length != 0 || chatHeo.length != 0 ) {
+                    let tienChatHeo = checkCards.chatHeo(chatHeo);
+                    users[turn[turn.length - 1]].coin += tienChatHeo;
+                    users[turn[turn.length - 2]].coin -= tienChatHeo;
+                }
+                for (let j = 0; j < players.length; j++) {
+                    io.to(players[j]).emit('result', {
+                        allCards: users[socket.id].allCards,
+                        id: socket.id
+                    })
+                    io.to(players[j]).emit('result', {
+                        allCards: users[nextId].allCards,
+                        id: nextId
+                    })
+                }
+                setTimeout(() => {
+                    console.log('het bai');
+                    room[roomId].cardOut = [];
+                    room[roomId].isPlaying = false;
+                    room[roomId].firstCardOut = false
+                    for (let i = 0; i < players.length; i++) {
+                        users[players[i]].isPlaying = false;
+                        users[players[i]].cards = [];
+                        users[players[i]].inTurn = false;
+                        users[players[i]].quitTurn = false;
+                        users[players[i]].doneGame = false;
+                        io.to(players[i]).emit('endGame', true)
+                        io.to(players[i]).emit('gameData', users[players[i]]);
+                        io.to(players[i]).emit('room', room[roomId]);
+                    }
+                }, 500)
             } else {
                 users[socket.id].inTurn = false;
                 users[socket.id].quitTurn = true;
@@ -265,9 +341,12 @@ io.on("connection", (socket) => {
                 room[roomId].players = players;
                 io.to(roomId).emit('room', room[roomId]);
                 for (let i = 0; i < players.length; i++) {
-                    io.to(players[i]).emit('result',{allCards:users[socket.id].allCards,id:socket.id})        
+                    io.to(players[i]).emit('result', {
+                        allCards: users[socket.id].allCards,
+                        id: socket.id
+                    })
                 }
-               
+
             }
         }
 
@@ -293,29 +372,24 @@ io.on("connection", (socket) => {
     })
 
     socket.on("disconnect", (reason) => {
-        if (reason === "transport close") {
-            console.log('refresh page')
-            socket.emit("123","123");
-        } else {
-            console.log(reason)
-            console.log(`User [${socket.id}] is disconnect.`)
-            let rid = users[socket.id].inRoom;
-            delete users[socket.id];
-            //Delete user in room
-            if (rid != "") {
-                for (let i = 0; i < room[rid].players.length; i++) {
-                    if (room[rid].players[i] == socket.id) {
-                        room[rid].players.splice(i, 1);
-                    }
-                }
-                roomForAllUser[rid]['playerNum'] -= 1
-
-                if (roomForAllUser[rid]['playerNum'] == 0) {
-                    delete room[rid]
-                    delete roomForAllUser[rid]
+        console.log(reason)
+        console.log(`User [${socket.id}] is disconnect.`)
+        let rid = users[socket.id].inRoom;
+        delete users[socket.id];
+        //Delete user in room
+        if (rid != "") {
+            for (let i = 0; i < room[rid].players.length; i++) {
+                if (room[rid].players[i] == socket.id) {
+                    room[rid].players.splice(i, 1);
                 }
             }
-        }   
+            roomForAllUser[rid]['playerNum'] -= 1
+
+            if (roomForAllUser[rid]['playerNum'] == 0) {
+                delete room[rid]
+                delete roomForAllUser[rid]
+            }
+        }
         io.emit('rooms', roomForAllUser)
         a()
     });
@@ -334,7 +408,10 @@ io.on("connection", (socket) => {
                 isPlaying: false,
                 playerFirstStart: '',
                 cardOut: [],
-                firstCardOut: false
+                firstCardOut: false,
+                turn: [],
+                bet: 5000,
+                chatHeo: [],
             }
             roomForAllUser[newRoomID] = {
                 roomId: newRoomID,
