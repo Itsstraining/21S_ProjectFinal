@@ -1,16 +1,20 @@
 const app = require("express")();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
-const { rootCertificates } = require("tls");
+const {
+    rootCertificates
+} = require("tls");
 const CardsService = require("./script");
 const Room = require('./room');
-const { Socket } = require("dgram");
+const {
+    Socket
+} = require("dgram");
 const cardS = new CardsService();
 const roomS = new Room();
 const CheckCardService = require('./check')
 const checkCards = new CheckCardService();
 let room = {
-    r120: {//Example
+    r120: { //Example
         roomId: 'r120',
         players: [12312312312312],
         isPlaying: false,
@@ -21,8 +25,8 @@ let room = {
 }
 
 let cards = [
-    ['03♦', '03♥', '04♠', '04♥', '05♠', '05♣', '05♥', '06♦', '06♥', 'Át♠', 'Át♣', 'Át♦', 'Át♥',],
-    ['03♠', '05♠', '05♣', '05♥', '06♦', '07♣', '08♣', 'Át♠', 'Át♣', 'Át♦', 'Át♥', '02♠', '02♣',]
+    ['03♦', '03♥', '04♠', '04♥', '05♠', '05♣', '05♥', '06♦', '06♥', 'Át♠', 'Át♣', 'Át♦', 'Át♥', ],
+    ['03♠', '05♠', '05♣', '05♥', '06♦', '07♣', '08♣', 'Át♠', 'Át♣', 'Át♦', 'Át♥', '02♠', '02♣', ]
 ]
 let publicValue = {
     //user:['lzTxZn9vcWWzywXNAAA5', '0RbojUK4uC2XGgt5AAA4'],
@@ -46,9 +50,11 @@ let users = {
         isPlaying: false,
         inTurn: false,
         quitTurn: false,
-        doneGame: false
+        doneGame: false,
+
     },
 };
+
 
 function a() {
     console.log('-------------------------------------------------------------------')
@@ -92,8 +98,10 @@ io.on("connection", (socket) => {
         isPlaying: false,
         inTurn: false,
         quitTurn: false,
-        doneGame: false
+        doneGame: false,
+        allCards: []
     }
+    
     //console.log(User [${socket.id}] is connect.)
     console.log(`User [${socket.id}] is connect.`);
     socket.emit("getID", socket.id);
@@ -119,9 +127,10 @@ io.on("connection", (socket) => {
                 io.of('/').in(roomID).clients(function (error, clients) {
                     let card = cardS.CARDS.slice()
                     let firstCard = []
-                    let cardTemp =  cardS.dealCarts(cardS.shuffleArray(card), usersTemp.length)
+                    let cardTemp = cardS.dealCarts(cardS.shuffleArray(card), usersTemp.length)
                     for (let i = 0; i < usersTemp.length; i++) {
                         users[usersTemp[i]].cards = cardTemp[i];
+                        users[usersTemp[i]].allCards = [...cardTemp[i]];
                         firstCard.push(cardTemp[i][0])
                         // //console.log(users[usersTemp[i]])
                         // io.to(usersTemp[i]).emit("gameData", cardTemp[i]);
@@ -145,8 +154,8 @@ io.on("connection", (socket) => {
         console.log('join')
         if (!room[roomId]) {
             socket.emit("canJoin", 'not found');
-        }
-        else {
+        } else {
+            
             io.of("/").in(roomId).clients(function (error, clients) {
                 if (room[roomId].players.length < 4) {
                     console.log(`socketId [${socket.id}] joined room.`);
@@ -156,7 +165,10 @@ io.on("connection", (socket) => {
                     room[roomId].players.push(socket.id)
                     roomForAllUser[roomId].playerNum += 1
                     //send userInfo
-                    publicInRoom.push({ uid: socket.id, sid: socket.id })
+                    publicInRoom.push({
+                        uid: socket.id,
+                        sid: socket.id
+                    })
                     io.of("/").in(roomId).clients(function (error, clients) {
                         console.log(clients)
                     });
@@ -215,6 +227,7 @@ io.on("connection", (socket) => {
             socket.emit('isValid', false);
         }
         if (users[socket.id].cards.length == 0) {
+            users[socket.id].doneGame = true;
             let players = room[users[socket.id].inRoom].players;
             let nextId = nextPlayer(socket.id);
             let roomId = users[socket.id].inRoom;
@@ -223,23 +236,38 @@ io.on("connection", (socket) => {
             console.log(nextOfNextPlayer);
             if (nextId == nextOfNextPlayer) {
                 //het game
-                console.log('het bai');
+                for (let j = 0; j < players.length; j++) {
+                    io.to(players[j]).emit('result',{allCards:users[socket.id].allCards,id:socket.id})  
+                    io.to(players[j]).emit('result',{allCards:users[nextId].allCards,id:nextId})        
+                }
+                setTimeout(()=>{
+                 console.log('het bai');
                 room[roomId].cardOut = [];
                 room[roomId].isPlaying = false;
                 room[roomId].firstCardOut = false
                 for (let i = 0; i < players.length; i++) {
-                    io.to(players[i]).emit('endGame', true);
-                }
+                    users[players[i]].isPlaying = false;
+                    users[players[i]].cards = [];
+                    users[players[i]].inTurn = false;
+                    users[players[i]].quitTurn = false;
+                    users[players[i]].doneGame = false;
+                    io.to(players[i]).emit('endGame', true)
+                    io.to(players[i]).emit('gameData', users[players[i]]);
+                    io.to(players[i]).emit('room',room[roomId]);
+                }   
+                },500)
             } else {
                 users[socket.id].inTurn = false;
                 users[socket.id].quitTurn = true;
                 users[socket.id].cards = [];
-                users[socket.id].doneGame = true;
                 // let playerNum = players.indexOf(socket.id);
                 // players.splice(playerNum,1);
                 room[roomId].players = players;
                 io.to(roomId).emit('room', room[roomId]);
-                socket.emit()
+                for (let i = 0; i < players.length; i++) {
+                    io.to(players[i]).emit('result',{allCards:users[socket.id].allCards,id:socket.id})        
+                }
+               
             }
         }
 
@@ -264,25 +292,30 @@ io.on("connection", (socket) => {
 
     })
 
+    socket.on("disconnect", (reason) => {
+        if (reason === "transport close") {
+            console.log('refresh page')
+            socket.emit("123","123");
+        } else {
+            console.log(reason)
+            console.log(`User [${socket.id}] is disconnect.`)
+            let rid = users[socket.id].inRoom;
+            delete users[socket.id];
+            //Delete user in room
+            if (rid != "") {
+                for (let i = 0; i < room[rid].players.length; i++) {
+                    if (room[rid].players[i] == socket.id) {
+                        room[rid].players.splice(i, 1);
+                    }
+                }
+                roomForAllUser[rid]['playerNum'] -= 1
 
-    socket.on("disconnect", function () {
-        console.log(`User [${socket.id}] is disconnect.`)
-        let rid = users[socket.id].inRoom;
-        delete users[socket.id];
-        //Delete user in room
-        if (rid != "") {
-            for (let i = 0; i < room[rid].players.length; i++) {
-                if (room[rid].players[i] == socket.id) {
-                    room[rid].players.splice(i, 1);
+                if (roomForAllUser[rid]['playerNum'] == 0) {
+                    delete room[rid]
+                    delete roomForAllUser[rid]
                 }
             }
-            roomForAllUser[rid]['playerNum'] -= 1
-
-            if (roomForAllUser[rid]['playerNum'] == 0) {
-                delete room[rid]
-                delete roomForAllUser[rid]
-            }
-        }
+        }   
         io.emit('rooms', roomForAllUser)
         a()
     });
@@ -310,8 +343,7 @@ io.on("connection", (socket) => {
 
             socket.emit('canCreateRoom', true)
             io.emit("rooms", roomForAllUser);
-        }
-        else {
+        } else {
             socket.emit('canCreateRoom', false)
         }
         a()
@@ -330,6 +362,6 @@ io.on("connection", (socket) => {
     a();
     io.emit("users", Object.keys(documents));
 });
-http.listen(3000,'0.0.0.0', () => {
+http.listen(3000, '0.0.0.0', () => {
     console.log("listening on *:3000");
 });
