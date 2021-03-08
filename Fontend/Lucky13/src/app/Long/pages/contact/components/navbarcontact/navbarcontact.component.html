@@ -1,9 +1,17 @@
 <header>
   <ul>
-    <li><a href="#">Home</a></li>
-    <li><a style="margin-left: 4vh" href="#">About</a></li>
-    <li><a style="margin-left: 4vh" href="#">Contact us</a></li>
-    <li><a style="margin-left: 4vh" routerLink="/signin">Sign out</a></li>
-    <li><a id="user" style="margin-left: 8vw" href="#"> Long </a></li>
+    <li><a routerLink="/home">Trang chủ</a></li>
+    <li><a style="margin-left: 4vh" routerLink="/aboutus">Về chúng tôi</a></li>
+    <li><a style="margin-left: 4vh" routerLink="/contact">Liên hệ</a></li>
+    <!-- <li><a style="margin-left: 4vh" routerLink="/signin">Sign out</a></li> -->
+    <!-- <li><a id="user" style="margin-left: 8vw" routerLink="/home"> Long </a></li> -->
+    <div>
+      <li>
+        <a style="margin-left: 6vw;" id="user" mat-button [matMenuTriggerFor]="menu">Long Minh</a>
+        <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/signin">Đăng xuất</button>
+        </mat-menu>
+    </li>
+    </div>
   </ul>
 </header>
