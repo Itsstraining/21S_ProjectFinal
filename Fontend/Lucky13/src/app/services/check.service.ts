@@ -144,13 +144,12 @@ export class CheckService {
     }
   }
 
-  
-  compareDeck(playerDeck =[], lastOutCard =[]) {
-    console.log(lastOutCard)
+
+  compareDeck(playerDeck = [], lastOutCard = []) {
     if (lastOutCard == undefined || lastOutCard.length == 0) {
       if (this.isLegal(playerDeck) != 0) {
         return true;
-      }else return false;
+      } else return false;
     }
     let playerDeckType = this.isLegal(playerDeck);
     let lastOutCardType = this.isLegal(lastOutCard);
@@ -158,8 +157,7 @@ export class CheckService {
     console.log("CardOut:" + lastOutCardType);
     let lastCardOfPlayer = playerDeck[playerDeck.length - 1];
     let lastCardOfOutCard = lastOutCard[lastOutCard.length - 1];
-    
-    
+
     if (lastOutCardType == 1 && lastOutCard[0][1] == '2') {
       if (playerDeckType == 2 && playerDeck.length == 4) {
         return true;
@@ -177,8 +175,20 @@ export class CheckService {
         return true;
       } else if (playerDeckType == 2 && playerDeck.length == 2 && this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
         return true;
-      } return false;
-    } else if (playerDeckType == lastOutCardType && playerDeck.length == lastOutCard.length) {
+      }
+      return false;
+    } else if (lastOutCardType == 4) {
+      if (playerDeckType == 2 && playerDeck.length == 4) {
+        return true;
+      } else if (playerDeckType == 4 && lastOutCard.length == 6 && playerDeck.length == 4) {
+        return true;
+      } else if (playerDeckType == 4 && lastOutCard.length == playerDeck.length) {
+        if (this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
+          return true;
+        } else return false;
+      } else return false;
+    }
+    else if (playerDeckType == lastOutCardType && playerDeck.length == lastOutCard.length) {
       if (this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
         return true
       } else return false

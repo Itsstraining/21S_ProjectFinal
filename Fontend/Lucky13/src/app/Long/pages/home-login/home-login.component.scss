@@ -1,8 +1,12 @@
 .img2 {
-    background-image: url("../../../../assets/3a751a36768ba093c60c96131b9f7266.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
-    height: 100%;
+  background-image: url("../../../../assets/3a751a36768ba093c60c96131b9f7266.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }

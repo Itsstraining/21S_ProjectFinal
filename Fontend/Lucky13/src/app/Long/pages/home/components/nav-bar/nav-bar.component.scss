@@ -16,9 +16,6 @@ header {
   left: 0%;
   transition: 0.6s;
   -webkit-transition: 0.6s;
-  -moz-transition: 0.6s;
-  -ms-transition: 0.6s;
-  -o-transition: 0.6s;
   padding: 20px 80px;
   z-index: 100000;
 }
@@ -37,9 +34,6 @@ header .logo {
   letter-spacing: 2px;
   transition: 0.6s;
   -webkit-transition: 0.6s;
-  -moz-transition: 0.6s;
-  -ms-transition: 0.6s;
-  -o-transition: 0.6s;
 }
 
 header ul {
@@ -66,9 +60,6 @@ header ul li a {
   white-space: nowrap;
   transition: 0.6s;
   -webkit-transition: 0.6s;
-  -moz-transition: 0.6s;
-  -ms-transition: 0.6s;
-  -o-transition: 0.6s;
 }
 
 header ul li a:hover,
@@ -123,7 +114,7 @@ header ul .button {
   }
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&display=swap");
-header p {
-  font-family: "Annie Use Your Telescope", cursive;
-}
+// @import url("https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&display=swap");
+// header p {
+//   font-family: "Annie Use Your Telescope", cursive;
+// }

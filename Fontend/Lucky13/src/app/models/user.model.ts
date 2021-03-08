@@ -6,4 +6,5 @@ export class User {
     quitTurn:boolean;
     isPlaying: boolean;
     doneGame: boolean;
+    
   }

@@ -45,6 +45,7 @@ export class CardsComponent implements OnInit {
 
     console.log(this.cardService.cardViewTemp)
     let lastCardsOut = this.cardService.Room.cardOut[this.cardService.Room.cardOut.length-1]
+    console.log(lastCardsOut)
     let isValid =this.checkCard.compareDeck(this.cardService.cardViewTemp,lastCardsOut)
     this.cardService.cardCheck = isValid;
     if (isValid == true) {
