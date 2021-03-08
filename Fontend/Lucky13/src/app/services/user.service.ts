@@ -24,7 +24,6 @@ export class UserService {
   }
   user = null;
   async loginWithGG() {
-    new firebase.default.auth.GoogleAuthProvider();
     await this.auth.signInWithPopup(
       new firebase.default.auth.GoogleAuthProvider()
     ).then(e => {

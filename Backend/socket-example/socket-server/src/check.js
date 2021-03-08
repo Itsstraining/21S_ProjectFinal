@@ -149,8 +149,6 @@ class CheckCardService {
     compareDeck(playerDeck,lastOutCard){
         let playerDeckType = this.isLegal(playerDeck);
         let lastOutCardType = this.isLegal(lastOutCard);
-        console.log("player:" +playerDeckType);
-        console.log("CardOut:" +lastOutCardType);
         let lastCardOfPlayer = playerDeck[playerDeck.length-1];
         let lastCardOfOutCard = lastOutCard[lastOutCard.length-1];
 

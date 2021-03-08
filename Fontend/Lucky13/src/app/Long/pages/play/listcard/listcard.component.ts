@@ -50,7 +50,8 @@ export class ListcardComponent implements OnInit, OnDestroy {
 
   }
   offTurn() {
-    this.documentService.quitTurn()
+    this.documentService.quitTurn();
+    this.cardService.cardViewTemp = [] ;
   }
 
   newDoc() {
