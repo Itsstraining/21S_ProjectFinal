@@ -286,4 +286,4 @@ class CardsService {
     // let res = quickTake(['03♠', '03♦', '03 '], ['03♥', '05♦', '05♠', '05♥', '06♠', '07♠', '07♠', '09♠', '10♠', 'JJ♠', 'KK♠', 'At♠', 'At♣'], 1, 0)
     // console.log(res)
 }
-module.exports = CardsService
+module.exports = CardsService　

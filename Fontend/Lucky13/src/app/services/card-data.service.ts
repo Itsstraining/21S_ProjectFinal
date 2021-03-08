@@ -21,6 +21,7 @@ export class CardDataService {
   takCards = [] //Bài được gợi ý cho người chơi.
   inTurn = false;
   quitTurn = false;
+  result = [];
  getRandom(){
   return Math.floor(Math.random() * 20);
 }
