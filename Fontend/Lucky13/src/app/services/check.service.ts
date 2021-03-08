@@ -136,7 +136,6 @@ export class CheckService {
           return type = 3
         } else {
           temp = this.doiThong(array, array.length, array[0], array[0])
-          console.log(temp)
           if (temp != undefined) {
             return type = 4
           } else return type = 0
@@ -145,20 +144,22 @@ export class CheckService {
     }
   }
 
-  /**
-   * 
-   * @param {number} type 
-   * @param {Array} playerDeck 
-   * @param {Array} lastOutCard 
-   */
-  compareDeck(playerDeck, lastOutCard) {
+  
+  compareDeck(playerDeck =[], lastOutCard =[]) {
+    console.log(lastOutCard)
+    if (lastOutCard == undefined || lastOutCard.length == 0) {
+      if (this.isLegal(playerDeck) != 0) {
+        return true;
+      }else return false;
+    }
     let playerDeckType = this.isLegal(playerDeck);
     let lastOutCardType = this.isLegal(lastOutCard);
     console.log("player:" + playerDeckType);
     console.log("CardOut:" + lastOutCardType);
     let lastCardOfPlayer = playerDeck[playerDeck.length - 1];
     let lastCardOfOutCard = lastOutCard[lastOutCard.length - 1];
-
+    
+    
     if (lastOutCardType == 1 && lastOutCard[0][1] == '2') {
       if (playerDeckType == 2 && playerDeck.length == 4) {
         return true;
@@ -177,7 +178,7 @@ export class CheckService {
       } else if (playerDeckType == 2 && playerDeck.length == 2 && this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
         return true;
       } return false;
-    } else if (playerDeckType == lastOutCardType) {
+    } else if (playerDeckType == lastOutCardType && playerDeck.length == lastOutCard.length) {
       if (this.priority[this.CARDS1.indexOf(lastCardOfPlayer)] > this.priority[this.CARDS1.indexOf(lastCardOfOutCard)]) {
         return true
       } else return false

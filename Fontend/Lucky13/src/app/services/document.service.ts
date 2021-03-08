@@ -29,14 +29,12 @@ export class DocumentService {
   cardOutCheck = this.socket.fromEvent<boolean>('isValid')
   firstTurn = this.socket.fromEvent<string>("getCheck")
   takeCard = this.socket.fromEvent<string[]>("takeCard")
-  endGame = this.socket.fromEvent<boolean>("endGame")
-  roomsData = this.socket.fromEvent<string[]>('rooms');//all room
+  endGame = this.socket.fromEvent<string>("endGame")
+  roomsData = this.socket.fromEvent<string[]>('rooms');
+  result = this.socket.fromEvent<JSON>('result');
   playerInfo = this.socket.fromEvent<Array<string>>('playerInfo');
-  numCardOfAll = this.socket.fromEvent<any>('numCardOfAll');
-
-
-
-
+  test = this.socket.fromEvent<string>('123');
+  numCardOfAll = this.socket.fromEvent<Array<string>>('numCardOfAll');
   canJoin: boolean
   socketID
   temp
@@ -53,8 +51,12 @@ export class DocumentService {
       alert(event)
     })
     this.endGame.subscribe(event => {
-      alert('ket thuc tran');
-      this.router.navigate([''])
+      //alert(event);
+    })
+
+    this.result.subscribe(event => {
+      cardDataService.result.push(event);
+      console.log(cardDataService.result)
     })
     this.takeCard.subscribe(Event => {
       console.log("server " + Event)
@@ -146,6 +148,7 @@ export class DocumentService {
       this.socketID = id
     })
   }
+
 
   checkValid(deck: Array<any>) {
     this.socket.emit('checkValid', deck)
