@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Socket } from 'ngx-socket-io';
+import { CardDataService } from 'src/app/services/card-data.service';
+import { DocumentService } from 'src/app/services/document.service';
 
 @Component({
   selector: 'app-countdown',
@@ -8,17 +11,17 @@ import { Component, OnInit } from '@angular/core';
 export class CountdownComponent implements OnInit {
 
 
-  public time = 31;
-  constructor() {
-    this.downTime()
-   }
+  public time = 0;
+  constructor(public cardService: CardDataService,private documentService: DocumentService) {
+    this.downTime
+  }
 
   ngOnInit(): void {
   }
 
-  downTime(){
-    this.time --
-    if(this.time!=0)
-      setTimeout(()=>this.downTime(),1000)
-   }
+  downTime() {
+    if (this.cardService.timer == 0) {
+      this.documentService.quitTurn();
+    }
+  }
 }

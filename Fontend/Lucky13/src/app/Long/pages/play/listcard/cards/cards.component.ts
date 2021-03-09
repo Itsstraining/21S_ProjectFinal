@@ -16,7 +16,7 @@ export class CardsComponent implements OnInit {
 
 
 
-  constructor(private cardService: CardDataService, private documentService: DocumentService,public checkCard:CheckService) {
+  constructor(private cardService: CardDataService, private documentService: DocumentService, public checkCard: CheckService) {
 
   }
 
@@ -36,17 +36,20 @@ export class CardsComponent implements OnInit {
     const elem = <HTMLElement>document.getElementsByClassName(card)[0];
     if (elem.style.marginBottom.valueOf() == '25px') {
       elem.style.marginBottom = '0px';
-      this.cardService.cardViewTemp.splice(this.cardService.cardViewTemp.indexOf(this.card),1);
+      this.cardService.cardViewTemp.splice(this.cardService.cardViewTemp.indexOf(this.card), 1);
     } else {
       elem.style.marginBottom = '25px';
-      this.cardService.cardViewTemp.push(this.card);
+      if (this.cardService.cardViewTemp.indexOf(this.card) == -1) {
+        this.cardService.cardViewTemp.push(this.card);
+      }
     }
 
+    this.cardService.cardViewTemp = this.checkCard.sortDeck(this.cardService.cardViewTemp);
 
     console.log(this.cardService.cardViewTemp)
-    let lastCardsOut = this.cardService.Room.cardOut[this.cardService.Room.cardOut.length-1]
+    let lastCardsOut = this.cardService.Room.cardOut[this.cardService.Room.cardOut.length - 1]
     console.log(lastCardsOut)
-    let isValid =this.checkCard.compareDeck(this.cardService.cardViewTemp,lastCardsOut)
+    let isValid = this.checkCard.compareDeck(this.cardService.cardViewTemp, lastCardsOut)
     this.cardService.cardCheck = isValid;
     if (isValid == true) {
       this.documentService.checkValid(this.cardService.cardViewTemp);

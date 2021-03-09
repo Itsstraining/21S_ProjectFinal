@@ -67,6 +67,14 @@ function a() {
     })
 }
 
+let countdown = 31;
+// setInterval(function () {
+//     countdown--;
+//     io.sockets.emit('timer', {
+//         countdown: countdown
+//     });
+// }, 1000);
+
 function nextPlayer(id) {
     let players = room[users[id].inRoom].players
     let nexPlayer = players.indexOf(id) + 1;
@@ -145,6 +153,16 @@ io.on("connection", (socket) => {
                         io.to(usersTemp[j]).emit('gameData', users[usersTemp[j]]);
                         io.to(usersTemp[j]).emit('room', room[roomID]);
                     }
+                    room[roomID].timer = 31;
+                    let count = setInterval(function () {
+                        if (room[roomID].isPlaying == true) {
+                            room[roomID].timer--;
+                        io.sockets.emit('timer', room[roomID].timer);
+                        }else {
+                            room[roomID].timer = 0;
+                            clearInterval(count);
+                        }
+                    }, 1000);
                 });
                 a()
             }
@@ -184,51 +202,59 @@ io.on("connection", (socket) => {
         }
     });
 
-
+   
     socket.on('quitTurn', () => {
-        users[socket.id].inTurn = false;
-        users[socket.id].quitTurn = true;
-        let players = room[users[socket.id].inRoom].players;
-        let nextId = nextPlayer(socket.id);
-        let nextOfNextPlayer = nextPlayer(nextId)
-        let roomId = users[socket.id].inRoom
-        users[nextId].inTurn = true;
-        let cardsOut = room[roomId].cardOut;
-        if (nextId == nextOfNextPlayer) {
-
-            console.log(cardsOut)
-            console.log(room[roomId].turn)
-            let chatHeo = [];
-            let turn = []
-            for (let i = 0; i < room[roomId].cardOut.length; i++) {
-                if (cardsOut[i][0][1] == '2' && cardsOut[i + 1] != undefined) {
-                    turn = room[roomId].turn.splice(i, cardsOut.length - 1);
-                    chatHeo = cardsOut.splice(i, cardsOut.length - 1);
-                    break;
+       
+        
+        
+            users[socket.id].inTurn = false;
+            users[socket.id].quitTurn = true;
+            let players = room[users[socket.id].inRoom].players;
+            let nextId = nextPlayer(socket.id);
+            let nextOfNextPlayer = nextPlayer(nextId)
+            let roomId = users[socket.id].inRoom
+            users[nextId].inTurn = true;
+            let cardsOut = room[roomId].cardOut;
+            if (nextId == nextOfNextPlayer) {
+    
+                console.log(cardsOut)
+                console.log(room[roomId].turn)
+                let chatHeo = [];
+                let turn = []
+                for (let i = 0; i < room[roomId].cardOut.length; i++) {
+                    if (cardsOut[i][0][1] == '2' && cardsOut[i + 1] != undefined) {
+                        turn = room[roomId].turn.splice(i, cardsOut.length - 1);
+                        chatHeo = cardsOut.splice(i, cardsOut.length - 1);
+                        break;
+                    }
+                }
+                console.log(chatHeo)
+                console.log(turn)
+                if (turn.length != 0 || chatHeo.length != 0) {
+                    let tienChatHeo = checkCards.chatHeo(chatHeo);
+                    users[turn[turn.length - 1]].coin += tienChatHeo;
+                    users[turn[turn.length - 2]].coin -= tienChatHeo;
+                }
+    
+                room[users[socket.id].inRoom].cardOut = [];
+                for (let i = 0; i < players.length; i++) {
+                    users[players[i]].quitTurn = false;
+    
+                    io.to(players[i]).emit('room', room[roomId])
+                    io.to(players[i]).emit('gameData', users[players[i]])
+                }
+            } else {
+                for (let i = 0; i < players.length; i++) {
+                    io.to(players[i]).emit('gameData', users[players[i]])
                 }
             }
-            console.log(chatHeo)
-            console.log(turn)
-            if (turn.length != 0 || chatHeo.length != 0 ) {
-                let tienChatHeo = checkCards.chatHeo(chatHeo);
-                users[turn[turn.length - 1]].coin += tienChatHeo;
-                users[turn[turn.length - 2]].coin -= tienChatHeo;
-            }
-
-            room[users[socket.id].inRoom].cardOut = [];
-            for (let i = 0; i < players.length; i++) {
-                users[players[i]].quitTurn = false;
-
-                io.to(players[i]).emit('room', room[roomId])
-                io.to(players[i]).emit('gameData', users[players[i]])
-            }
-        } else {
-            for (let i = 0; i < players.length; i++) {
-                io.to(players[i]).emit('gameData', users[players[i]])
-            }
-        }
-        a()
+           
+            a()
+        
+        room[roomId].timer = 31;
+       
     })
+
 
     socket.on('sendCards', (deck) => {
         let roomId = users[socket.id].inRoom;
@@ -276,7 +302,7 @@ io.on("connection", (socket) => {
                 }
                 console.log(chatHeo)
                 console.log(turn)
-                if (turn.length != 0 || chatHeo.length != 0 ) {
+                if (turn.length != 0 || chatHeo.length != 0) {
                     let tienChatHeo = checkCards.chatHeo(chatHeo);
                     users[turn[turn.length - 1]].coin += tienChatHeo;
                     users[turn[turn.length - 2]].coin -= tienChatHeo;
@@ -304,12 +330,12 @@ io.on("connection", (socket) => {
                 for (let j = 0; j < room[roomId].rank.length; j++) {
                     if (j == 0) {
                         users[room[roomId].rank[j].id].coin += 2;
-                    }else if (j == 1) {
+                    } else if (j == 1) {
                         users[room[roomId].rank[j].id].coin += 1;
-                    }else if (j == 2) {
+                    } else if (j == 2) {
                         users[room[roomId].rank[j].id].coin -= 1;
-                    }else users[room[roomId].rank[j].id].coin -= 2;
-                }                
+                    } else users[room[roomId].rank[j].id].coin -= 2;
+                }
 
 
                 setTimeout(() => {
@@ -350,7 +376,16 @@ io.on("connection", (socket) => {
 
 
             }
+            
+            // setInterval(function () {
+            //     countdown--;
+            //     io.sockets.emit('timer', countdown);
+            //     if (countdown == 0) {
+            //         return;
+            //     }
+            // }, 1000);
         }
+        room[roomId].timer = 31;
 
         a();
 
@@ -414,7 +449,8 @@ io.on("connection", (socket) => {
                 turn: [],
                 bet: 5000,
                 chatHeo: [],
-                rank:[],
+                rank: [],
+                timer:0
             }
             roomForAllUser[newRoomID] = {
                 roomId: newRoomID,
