@@ -137,7 +137,7 @@ io.on("connection", (socket) => {
                     }
                     room[roomID].timer = 31;
                     let count = setInterval(function () {
-                        if (room[roomID].isPlaying == true) {
+                        if (room[roomID].isPlaying == true || room[roomID]!=undefined) {
                             room[roomID].timer--;
                             io.sockets.emit('timer', room[roomID].timer);
                         } else {

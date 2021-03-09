@@ -8,12 +8,12 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //long
-//const config: SocketIoConfig = { url: 'http://192.168.31.147:3000', options: {} };
+const config: SocketIoConfig = { url: 'http://192.168.31.147:3000', options: {} };
 
 //duc
 //const config: SocketIoConfig = { url: 'http://192.168.31.188:3000', options: {} };
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+//const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 import { HttpClientModule } from '@angular/common/http';
 import { CountdownComponent } from './Long/pages/play/countdown/countdown.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
