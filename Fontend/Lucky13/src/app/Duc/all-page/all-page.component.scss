@@ -10,14 +10,14 @@
   .card svg.material-icons path {
     fill: #888;
   }
-  
+
   .card-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 16px;
   }
-  
+
   .card {
     border-radius: 4px;
     border: 1px solid #eee;
@@ -33,29 +33,29 @@
     transition: all 0.2s ease-in-out;
     line-height: 24px;
   }
-  
+
   .card-container .card:not(:last-child) {
     margin-right: 0;
   }
-  
+
   .card.card-small {
     height: 16px;
     width: 168px;
   }
-  
+
   .card-container .card:not(.highlight-card) {
     cursor: pointer;
   }
-  
+
   .card-container .card:not(.highlight-card):hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
   }
-  
+
   .card-container .card:not(.highlight-card):hover .material-icons path {
     fill: rgb(105, 103, 103);
   }
-  
+
   .card.highlight-card {
     background-color: #1976d2;
     color: white;
@@ -65,7 +65,7 @@
     min-width: 30%;
     position: relative;
   }
-  
+
   .card.card.highlight-card span {
     margin-left: 60px;
   }
@@ -79,33 +79,33 @@
       transform: translateY(-3px);
       box-shadow: 0 4px 17px rgba(0, 0, 0, 0.35);
     }
-  
+
     a,
     a:visited,
     a:hover {
       color: #1976d2;
       text-decoration: none;
     }
-  
+
     a:hover {
       color: #125699;
     }
     @media screen and (max-width: 767px) {
-  
+
       .card-container > *:not(.circle-link) ,
       .terminal {
         width: 100%;
       }
-  
+
       .card:not(.highlight-card) {
         height: 16px;
         margin: 8px 0;
       }
-  
+
       .card.highlight-card span {
         margin-left: 72px;
       }
-  
+
       svg#rocket-smoke {
         right: 120px;
         transform: rotate(-5deg);
@@ -149,4 +149,3 @@
       padding: 14px 0;
       text-indent: 4px;
     }
-  

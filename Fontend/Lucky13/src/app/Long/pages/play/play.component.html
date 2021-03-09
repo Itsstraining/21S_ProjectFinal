@@ -1,4 +1,5 @@
 <div id="img">
+<<<<<<< HEAD
   <div style="display: flex;">
     <div class="id">
       <p>Bet: 5k</p>
@@ -10,6 +11,8 @@
     </div>
   </div>
 
+=======
+>>>>>>> 7fb63aa9cb10c9b5ba82704a0e1ebce5c5f58c40
   <div style="display: flex" class="av1">
     <div>
       <p style="margin: 0">Player 2</p>
@@ -19,20 +22,14 @@
       <p style="margin: 0">$ 5.2M</p>
     </div>
     <div style="margin-left: 15px">
-      <p *ngIf="cardDataService.User.isPlaying" style="
-          position: absolute;
-          margin-left: 15px;
-          width: 20px;
-          height: 20px;
-          background-color: blanchedalmond;
-          color: black;
-          border-radius: 50%;
-        ">
+      <p class="classp" *ngIf="cardDataService.User.isPlaying">
         13
       </p>
       <img *ngIf="cardDataService.User.isPlaying" id="tambai" src="../../../../assets/baiup.png" alt="labaiup" />
+
     </div>
   </div>
+
   <div class="av3" style="display: flex;">
     <div>
       <p style="margin: 0">Player 3</p>
@@ -85,6 +82,8 @@
 
   <app-countdown *ngIf="cardDataService.User.inTurn && !cardDataService.User.quitTurn"></app-countdown>
   <app-listshowcards *ngIf="cardDataService.User.isPlaying"></app-listshowcards>
+    <app-user></app-user>
+    <app-showcarduser></app-showcarduser>
 </div>
 
 <button *ngIf="!cardDataService.User.isPlaying" (click)="letStart()" style="position: absolute;top: 49%;left: 49%;">Bắt
