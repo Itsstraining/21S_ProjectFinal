@@ -9,8 +9,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class UserService {
-  //endpoint = 'http://192.168.31.188:3000/'
-  endpoint = 'http://localhost:3000/'
+  //endpoint = 'http://192.168.31.188:7009/'
+  endpoint = 'http://192.168.31.147:7009/'
+  //endpoint = 'http://localhost:7009/'
 
   constructor(
     private httpClient: HttpClient,
