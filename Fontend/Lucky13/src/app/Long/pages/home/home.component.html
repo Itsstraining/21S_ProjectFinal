@@ -1,23 +1,5 @@
 <app-nav-top></app-nav-top>
 <div class="img1">
-  <!-- <div class="ctn">
-    <h1>Welcom to Lucky13</h1>
-    <p class="content">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Necessitatibus,
-      cupiditate fugiat dolorem itaque porro error tenetur quia obcaecati dolor
-      ea eius tempore commodi animi labore consectetur quam? Eius, maiores
-      architecto? Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-      Nesciunt consectetur nam modi quidem? Illum corporis ut facilis quam,
-      incidunt dolore ab quia, cupiditate molestias atque ipsum vitae saepe,
-      sunt recusandae.
-    </p>
-    <a href="/room" class="btn">Play now</a>
-  </div> -->
-  <!-- <div class="container">
-    <app-carousel [slides]="slides"></app-carousel>
-  </div> -->
-  
-  
 </div>
 
 <div class="band">
@@ -25,7 +7,7 @@
     <a href="#" class="card">
       <!-- <div class="thumb"></div> -->
       <div class="container">
-      <app-carousel [slides]="slides"></app-carousel>
+        <app-carousel [slides]="slides"></app-carousel>
       </div>
       <article>
         <h1>Tin tức về Lucky13!</h1>
@@ -42,7 +24,7 @@
         <table class="tb" style="width: 100%;">
           <tr>
             <th>Xếp hạng</th>
-            <th>Người chơi</th> 
+            <th>Người chơi</th>
             <th>Tiền thưởng</th>
           </tr>
           <tr>
@@ -104,11 +86,11 @@
         <span>09/03/2021</span>
       </article>
     </a>
-    <div  class="pl">
-    <a class="button" routerLink="/room">Play</a>
+    <div class="pl" (click)="goRooms()" style="cursor: pointer;">
+      <a class="button">Play</a>
+    </div>
   </div>
-  </div>
-  
+
   <!-- <div class="item-3">
     <a href="https://design.tutsplus.com/articles/envato-tuts-community-challenge-created-by-you-july-edition--cms-26724" class="card">
       <div class="thumb" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/210284/flex-5.jpg);"></div>

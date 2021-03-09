@@ -16,20 +16,24 @@ export class UserService {
     private router: Router,
     public snackBar: MatSnackBar,
   ) {
-    this.user = JSON.parse(localStorage.getItem('user'))
-    console.log(this.user)
-    this.auth.authState.subscribe((user) => {
-      if (user) {
-        this.user = user;
-        localStorage.setItem('user', JSON.stringify(this.user));
-        // console.log('login success! ' + this.user.displayName);
-      } else {
-        localStorage.setItem('user', null);
-      }
-    });
-  }
+    let a = JSON.parse(localStorage.getItem('user'))
+    if (a == null) {
+      this.auth.authState.subscribe((user) => {
+        if (user) {
+          this.user = user;
+          localStorage.setItem('user', JSON.stringify(this.user));
+        } else {
+          localStorage.setItem('user', null);
+        }
+      });
+    }
+    else {
+      console.log(JSON.parse(localStorage.getItem('user')))
+      this.user = JSON.parse(localStorage.getItem('user'))
+    }
 
-  user = null;
+  }
+  user = null
   async loginWithGG() {
     let res = await this.auth.signInWithPopup(
       new firebase.default.auth.GoogleAuthProvider()
@@ -52,15 +56,25 @@ export class UserService {
     let users: any = await this.httpClient.get('http://127.0.0.1:7009/user', {
       params: { uid: ID }
     }).toPromise()
-    console.log(users)
-    if (users.res.password == PW) {
+    console.log(users.res)
+    console.log(users.res.password)
+
+    if (users.res.password != undefined && users.res.password == PW) {
+      this.changeUserView(users.res)
       this.router.navigate(['']);
       this.showSnackbarSuccessful('LOGIN')
     }
     else if (!users || users.password != PW) {
       this.showSnackbarFail('LOGIN')
     }
-
+    else {
+      this.showSnackbarFail('LOGIN')
+    }
+  }
+  logOut() {
+    this.auth.signOut()
+    this.changeUserView(null)
+    this.router.navigate(['/signin']);
   }
 
   async createUser(displayName, email, photoURL, uid, phone, password) {
@@ -99,6 +113,12 @@ export class UserService {
     })
   }
 
+  changeUserView(userNew) {
+    this.auth.signOut()
+    localStorage.setItem('user', JSON.stringify(userNew));
+    this.user = userNew
+    console.log(JSON.parse(localStorage.getItem('user')))
+  }
 
   public showSnackbarSuccessful(val: string): void {
     this.snackBar.open(`${val} Successfully`, '✔️', {

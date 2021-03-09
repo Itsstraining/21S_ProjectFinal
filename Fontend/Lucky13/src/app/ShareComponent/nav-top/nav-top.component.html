@@ -1,10 +1,7 @@
 <header>
   <a href="#" class="logo" style="display: flex; flex-direction: row; left: 4%">
-    <img
-      style="height: 80px; width: 80px"
-      src="../../../../assets/152400626_895752037847907_7072356985460831357_n.png"
-      alt="icon"
-    />
+    <img style="height: 80px; width: 80px" src="../../../../assets/152400626_895752037847907_7072356985460831357_n.png"
+      alt="icon" />
     <p style="margin-top: 31.3px">Lucky13</p>
   </a>
   <ul>
@@ -12,25 +9,25 @@
     <li><a routerLink="/aboutus">Về chúng tôi</a></li>
     <li><a routerLink="/contact">Liên hệ</a></li>
 
-    <li *ngIf="!user"><a routerLink="/signup">Đăng ký</a></li>
-    <div *ngIf="!user">
+    <li *ngIf="userService.user == null"><a routerLink="/signup">Đăng ký</a></li>
+    <div *ngIf="userService.user == null">
       <li><a routerLink="/signin">Đăng nhập</a></li>
     </div>
-    <!-- <div *ngIf="user">
-      <li>
-        <a>{{ user.displayName }}</a>
-      </li>
-    </div> -->
 
-    <div *ngIf="user" >
-        <li>
-            <a mat-button [matMenuTriggerFor]="menu">{{ user.displayName }}</a>
-            <mat-menu #menu="matMenu">
-            <button mat-menu-item routerLink="/signin">Đăng xuất</button>
-            </mat-menu>
-        </li>
+
+    <div *ngIf="userService.user!=null">
+      <li>
+        <a mat-button>{{ userService.user.displayName }}</a>
+      </li>
     </div>
-    
+
+    <div *ngIf="userService.user!=null">
+      <li style="cursor: pointer;" (click)="logOut()">
+        <img width="50vw" src="../../../assets/logout.svg" alt="">
+      </li>
+
+    </div>
+
     <!-- <li>
             <button mat-icon-button aria-label="Example icon-button with a menu">
                 <mat-icon>more_vert</mat-icon>

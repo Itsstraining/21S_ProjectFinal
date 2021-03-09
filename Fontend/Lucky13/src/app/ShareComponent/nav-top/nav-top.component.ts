@@ -1,4 +1,5 @@
 import { Component, OnInit, } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -7,13 +8,12 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./nav-top.component.scss']
 })
 export class NavTopComponent implements OnInit {
-  user = this.userService.user
-  constructor(private userService: UserService) {
+  constructor(public userService: UserService, private router: Router) {
   }
 
   ngOnInit(): void {
   }
-  something() {
-
+  logOut() {
+    this.userService.logOut()
   }
 }
