@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Favorite Animal</h1>
+<div mat-dialog-content>
+  My favorite animal is:
+  <ul>
+    <li>
+      <span *ngIf="data.animal === 'panda'">&#10003;</span> {{cardDataService.result}}
+    </li>
+    
+  </ul>
+</div>

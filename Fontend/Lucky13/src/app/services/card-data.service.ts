@@ -22,6 +22,7 @@ export class CardDataService {
   inTurn = false;
   quitTurn = false;
   result = [];
+  timer = 0
  getRandom(){
   return Math.floor(Math.random() * 20);
 }

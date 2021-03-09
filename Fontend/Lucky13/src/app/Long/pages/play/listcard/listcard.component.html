@@ -2,7 +2,8 @@
   <div style=" position: absolute; bottom: 24%; width: 100%; ">
     <button *ngIf="!cardService.cardCheck && cardService.inTurn && !cardService.User.quitTurn " style="margin-left: 20%;filter: brightness(50%);" class="button button1">Đánh</button>
     <button *ngIf="cardService.cardCheck && cardService.inTurn && !cardService.User.quitTurn" style="margin-left: 20%;" (click)="sendCards()" class="button button1">Đánh</button>
-    <button *ngIf="cardService.inTurn && !cardService.User.quitTurn " style="margin-left: 1%;" (click)="offTurn()" class="button button2">Bỏ Lượt</button>
+    <button *ngIf="cardService.inTurn && !cardService.User.quitTurn && !cardService.Room.cardOut.length " style="margin-left: 1%;filter: brightness(50%)" class="button button2">Bỏ Lượt</button>
+    <button *ngIf="cardService.inTurn && !cardService.User.quitTurn && cardService.Room.cardOut.length  " style="margin-left: 1%;" (click)="offTurn()" class="button button2">Bỏ Lượt</button>
   </div>
   <div *ngIf="!cardService.inTurn" style="margin-top: 630px;filter: brightness(50%); position: absolute; bottom: 0%; width: 100%; text-align: center;">
     <app-cards *ngFor='let card of cardService.cardsOfUser' [card]="card"></app-cards>

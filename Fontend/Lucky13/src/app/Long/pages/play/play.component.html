@@ -1,4 +1,18 @@
 <div id="img">
+<<<<<<< HEAD
+  <div style="display: flex;">
+    <div class="id">
+      <p>Bet: 5k</p>
+      <p>Table No.: 1</p>
+    </div>
+    <div style="margin-left: 90vw;margin-right: 0%;" class="id">
+      <p>Timer:</p>
+      <p>{{cardDataService.timer}}</p>
+    </div>
+  </div>
+
+=======
+>>>>>>> 7fb63aa9cb10c9b5ba82704a0e1ebce5c5f58c40
   <div style="display: flex" class="av1">
     <div>
       <p style="margin: 0">Player 2</p>
@@ -65,16 +79,13 @@
     </div>
   </div>
 
-  <app-countdown *ngIf="cardDataService.User.isPlaying"></app-countdown>
 
-
+  <app-countdown *ngIf="cardDataService.User.inTurn && !cardDataService.User.quitTurn"></app-countdown>
   <app-listshowcards *ngIf="cardDataService.User.isPlaying"></app-listshowcards>
     <app-user></app-user>
     <app-showcarduser></app-showcarduser>
 </div>
-<!-- <button class="buttonbatdau" *ngIf="!cardDataService.User.isPlaying" (click)="letStart()" mat-stroked-button>Bắt Đầu</button> -->
-<img class="img4" src="../../../../assets//play_btn.png">
+
+<button *ngIf="!cardDataService.User.isPlaying" (click)="letStart()" style="position: absolute;top: 49%;left: 49%;">Bắt
+  đầu</button>
 <app-listcard *ngIf="cardDataService.User.isPlaying"></app-listcard>
-
-
-

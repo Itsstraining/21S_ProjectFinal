@@ -30,6 +30,7 @@ export class DocumentService {
   result = this.socket.fromEvent<JSON>('result');
   
   test = this.socket.fromEvent<string>('123');
+  timer = this.socket.fromEvent<number>('timer');
   canJoin: boolean
   socketID
   temp
@@ -38,8 +39,15 @@ export class DocumentService {
     this.firstTurn.subscribe(event => {
       alert(event)
     })
+    this.timer.subscribe(event =>{
+      cardDataService.timer = event;
+      if (cardDataService.timer == 0 && cardDataService.User.inTurn == true) {
+        socket.emit('quitTurn','')
+      }
+    })
     this.endGame.subscribe(event => {
       //alert(event);
+
     })
 
     this.result.subscribe(event =>{
