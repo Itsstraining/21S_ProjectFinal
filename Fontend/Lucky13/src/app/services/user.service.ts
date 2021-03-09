@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class UserService {
+  //endpoint = 'http://192.168.31.188:3000/'
+  endpoint = 'http://localhost:3000/'
 
   constructor(
     private httpClient: HttpClient,
@@ -53,7 +55,7 @@ export class UserService {
 
   }
   async loginWithAccount(ID, PW: string) {
-    let users: any = await this.httpClient.get('http://127.0.0.1:7009/user', {
+    let users: any = await this.httpClient.get(this.endpoint + 'user', {
       params: { uid: ID }
     }).toPromise()
     console.log(users.res)
@@ -78,7 +80,7 @@ export class UserService {
   }
 
   async createUser(displayName, email, photoURL, uid, phone, password) {
-    let res: any = await this.httpClient.post('http://127.0.0.1:7009/user', {
+    let res: any = await this.httpClient.post(this.endpoint + 'user', {
       id: uid,
       displayName: displayName,
       email: email,
@@ -89,7 +91,7 @@ export class UserService {
     return res
   }
   async getUser(uid) {
-    let user: any = await this.httpClient.get('http://127.0.0.1:7009/user', {
+    let user: any = await this.httpClient.get(this.endpoint + 'user', {
       params: {
         uid: uid
       }
@@ -97,7 +99,7 @@ export class UserService {
     this.user = user.res
   }
   async getUsers() {
-    let users = await this.httpClient.get('http://127.0.0.1:7009/roomRT?rid=kNTlAEaaLBUVzYAgjXgKLenynO03').toPromise()
+    let users = await this.httpClient.get(this.endpoint + 'roomRT?rid=kNTlAEaaLBUVzYAgjXgKLenynO03').toPromise()
     return users
   }
 

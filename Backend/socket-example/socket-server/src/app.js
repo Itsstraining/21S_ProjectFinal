@@ -71,6 +71,14 @@ function a() {
     })
 }
 
+let countdown = 31;
+// setInterval(function () {
+//     countdown--;
+//     io.sockets.emit('timer', {
+//         countdown: countdown
+//     });
+// }, 1000);
+
 function nextPlayer(id) {
     let players = room[users[id].inRoom].players
     let nexPlayer = players.indexOf(id) + 1;
@@ -127,6 +135,16 @@ io.on("connection", (socket) => {
                         io.to(usersTemp[j]).emit('gameData', users[usersTemp[j]]);
                         io.to(usersTemp[j]).emit('room', room[roomID]);
                     }
+                    room[roomID].timer = 31;
+                    let count = setInterval(function () {
+                        if (room[roomID].isPlaying == true) {
+                            room[roomID].timer--;
+                            io.sockets.emit('timer', room[roomID].timer);
+                        } else {
+                            room[roomID].timer = 0;
+                            clearInterval(count);
+                        }
+                    }, 1000);
                 });
                 a()
             }
@@ -179,6 +197,9 @@ io.on("connection", (socket) => {
 
 
     socket.on('quitTurn', () => {
+
+
+
         users[socket.id].inTurn = false;
         users[socket.id].quitTurn = true;
         let players = room[users[socket.id].inRoom].players;
@@ -220,8 +241,13 @@ io.on("connection", (socket) => {
                 io.to(players[i]).emit('gameData', users[players[i]])
             }
         }
+
         a()
+
+        room[roomId].timer = 31;
+
     })
+
 
     socket.on('sendCards', (deck) => {
         let roomId = users[socket.id].inRoom;
@@ -343,7 +369,16 @@ io.on("connection", (socket) => {
 
 
             }
+
+            // setInterval(function () {
+            //     countdown--;
+            //     io.sockets.emit('timer', countdown);
+            //     if (countdown == 0) {
+            //         return;
+            //     }
+            // }, 1000);
         }
+        room[roomId].timer = 31;
 
         //gửi số lượng bài mỗi người
         let arrTemp = []
@@ -436,6 +471,7 @@ io.on("connection", (socket) => {
                 bet: 5000,
                 chatHeo: [],
                 rank: [],
+                timer: 0
             }
             roomForAllUser[newRoomID] = {
                 roomId: newRoomID,
@@ -464,6 +500,6 @@ io.on("connection", (socket) => {
     a();
     io.emit("users", Object.keys(documents));
 });
-http.listen(3000, () => {
+http.listen(3000, '0.0.0.0', () => {
     console.log("listening on *:3000");
 });
